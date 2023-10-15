@@ -1,0 +1,437 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookingRoomHotel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/assets/css/style.css" />
+    <link rel="stylesheet" href="~/css/assets/css/feathericon.min.css" />
+    <link rel="stylesheet" href="~/css/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/assets/css/" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/assets/img/favicon.png">
+    <link rel="stylesheet" href="~/BookingRoomHotel.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="z-index: 1060;">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark d-none" asp-area="" asp-controller="Admin" asp-action="Index" id="showLoginStaff">Staff</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d-flex">
+                    <a class="me-2 m-auto fs-7 h-font" id="showName" asp-action="index" asp-controller="ProfileCustomer"></a>
+                </div>
+                <div class="d-flex">
+                    <button type="button" class="btn btn-outline-dark shadow-none me-lg-2 me-3 d-none" data-toggle="modal" data-target="#loginModal" id="showLogCus">
+                        Login
+                    </button>
+
+                    <button type="button" class="btn btn-outline-dark shadow-none me-lg-2 me-3 d-none" data-toggle="modal" data-target="#registerModal" id="showResCus">
+                        Register
+                    </button>
+                </div>
+                <ul class="nav user-menu d-none" id="showUserAuth">
+                    <li class="nav-item dropdown noti-dropdown">
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <i class="fe fe-bell"></i> <span class="badge badge-pill">3</span> </a>
+                        <div class="dropdown-menu notifications dropdown-menu-right">
+                            <div class="topnav-dropdown-header"> <span class="notification-title">Notifications</span> <a href="javascript:void(0)" class="clear-noti"> Clear All </a> </div>
+                            <div class="noti-content">
+                                <ul class="notification-list">
+                                    <li class="notification-message">
+                                        <a href="#">
+                                            <div class="media">
+                                                <span class="avatar avatar-sm">
+                                                    <img class="avatar-img rounded-circle" alt="User Image" src="~/images/customer/profile/avtAdmin.jpeg">
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="noti-details"><span class="noti-title">Carlson Tech</span> has approved <span class="noti-title">your estimate</span></p>
+                                                    <p class="noti-time"><span class="notification-time">4 mins ago</span> </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="notification-message">
+                                        <a href="#">
+                                            <div class="media">
+                                                <span class="avatar avatar-sm">
+                                                    <img class="avatar-img rounded-circle" alt="User Image" src="~/images/customer/profile/avtAdmin.jpeg">
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="noti-details">
+                                                        <span class="noti-title">
+                                                            International Software
+                                                            Inc
+                                                        </span> has sent you a invoice in the amount of <span class="noti-title">$218</span>
+                                                    </p>
+                                                    <p class="noti-time"><span class="notification-time">6 mins ago</span> </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="notification-message">
+                                        <a href="#">
+                                            <div class="media">
+                                                <span class="avatar avatar-sm">
+                                                    <img class="avatar-img rounded-circle" alt="User Image" src="~/images/customer/profile/avtAdmin.jpeg">
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="noti-details">
+                                                        <span class="noti-title">John Hendry</span> sent a cancellation request <span class="noti-title">
+                                                            Apple iPhone
+                                                            XR
+                                                        </span>
+                                                    </p>
+                                                    <p class="noti-time"><span class="notification-time">8 mins ago</span> </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="notification-message">
+                                        <a href="#">
+                                            <div class="media">
+                                                <span class="avatar avatar-sm">
+                                                    <img class="avatar-img rounded-circle" alt="User Image" src="~/images/customer/profile/avtAdmin.jpeg">
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="noti-details">
+                                                        <span class="noti-title">
+                                                            Mercury Software
+                                                            Inc
+                                                        </span> added a new product <span class="noti-title">
+                                                            Apple
+                                                            MacBook Pro
+                                                        </span>
+                                                    </p>
+                                                    <p class="noti-time"><span class="notification-time">12 mins ago</span> </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="topnav-dropdown-footer"> <a href="#">View all Notifications</a> </div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown has-arrow" style="z-index: 1060;">
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown"> <span class="user-img"><img class="rounded-circle" src="~/images/customer/profile/avtAdmin.jpeg" width="31" alt="avatar" id="userAvt"></span> </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="user-header">
+                                <div class="avatar avatar-sm"> <img src="~/images/customer/profile/avtAdmin.jpeg" alt="avatar" class="" id="userAvt2"> </div>
+                                <div class="user-text">
+                                    <h6 id="userName"></h6>
+                                    <p class="text-muted mb-0" id="userRole"></p>
+                                </div>
+                            </div> <a class="dropdown-item" asp-action="index" asp-controller="ProfileCustomer">My Profile</a> <a class="dropdown-item" href="settings.html">Account Settings</a>
+                            <div>
+                                <a class="dropdown-item" onclick="logout()" id="showLogout">Logout</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Modal chung -->
+    <div class="modal fade zoom formModal" id="successModal" style="z-index: 1500;" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content card">
+                <div class="modal-header alert-success">
+                    <h5 class="m-0">Success</h5>
+                </div>
+                <div class="modal-body messageModal" id="successMessage">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade zoom formModal" style="z-index: 1500;" id="errorModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content card">
+                <div class="modal-header alert-danger">
+                    <h5 class="m-0">Error</h5>
+                </div>
+                <div class="modal-body messageModal" id="errorMessage">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="loginModal" style="z-index: 1080;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form onsubmit="return loginCustomer()" id="loginForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title d-flex align-items-center">
+                            <i class="bi bi-person-heart me-2"></i> User Login
+                        </h5>
+                        <button type="reset" class="close shadow-none" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="UserName" class="form-control shadow-none" pattern="[A-z0-9]+" minlength=5 maxlength=20 required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="Password" class="form-control shadow-none" required>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <button type="submit" class="btn btn-dark shadow-none">
+                                LOGIN
+                            </button>
+                            <div>
+                                <a href="javascript: void(0)" data-toggle="modal" data-dismiss="modal" data-target="#forgotPasswordModal" class="text-secondary text-decoration-none">
+                                    Forgot your password?
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a href="javascript: void(0)" data-toggle="modal" data-dismiss="modal" data-target="#changePasswordModal" class="text-secondary text-decoration-none">
+                                Change Password
+                            </a><br>
+                            <a href="javascript: void(0)" data-toggle="modal" data-dismiss="modal" data-target="#registerModal" class="text-secondary text-decoration-none">
+                                Haven't account! Register now!
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="changePasswordModal" style="z-index: 1080;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form onsubmit="return changePasswordCustomer()" id="changePasswordForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title d-flex align-items-center">
+                            <i class="bi bi-person-heart me-2"></i> Change Password
+                        </h5>
+                        <button type="reset" class="close shadow-none" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="Id" class="form-control shadow-none" pattern="[A-z0-9]+" minlength=5 maxlength=20 required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Old Password</label>
+                            <input type="password" name="OldPw" class="form-control shadow-none" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <input type="password" name="NewPw" class="form-control shadow-none" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" name="ConfirmNewPw" class="form-control shadow-none" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-dark shadow-none">
+                                Change
+                            </button><br>
+                            <a href="javascript: void(0)" data-toggle="modal" data-dismiss="modal" data-target="#loginModal" class="text-secondary text-decoration-none">
+                                Already account! Login now!
+                            </a><br>
+                            <a href="javascript: void(0)" data-toggle="modal" data-dismiss="modal" data-target="#registerModal" class="text-secondary text-decoration-none">
+                                Haven't account! Register now!
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="forgotPasswordModal" style="z-index: 1080;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form onsubmit="return forgotPasswordCustomer()" id="forgotPasswordForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title d-flex align-items-center">
+                            <i class="bi bi-person-heart me-2"></i> Forgot Password
+                        </h5>
+                        <button type="reset" class="close shadow-none" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="Id" class="form-control shadow-none" pattern="[A-z0-9]+" minlength=5 maxlength=20 required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="Email" class="form-control shadow-none" required>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <button type="submit" class="btn btn-dark shadow-none">
+                                Send
+                            </button>
+                            <a href="javascript: void(0)" data-toggle="modal" data-dismiss="modal" data-target="#loginModal" class="text-secondary text-decoration-none">
+                                Login now!
+                            </a>
+                        </div>
+                        <div class="text-center">
+                            <a href="javascript: void(0)" data-toggle="modal" data-dismiss="modal" data-target="#registerModal" class="text-secondary text-decoration-none">
+                                Haven't account! Register now!
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="registerModal" style="z-index: 1080;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form onsubmit="return registerCustomer()" id="registerForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title d-flex align-items-center">
+                            <i class="bi bi-person-lines-fill me-2"></i> User Registration
+                        </h5>
+                        <button type="reset" class="close shadow-none" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
+                            Note: Your details must match with your ID(passport, driving license, etc) that will be required
+                            during check-in process.
+                        </span>
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="col-md-12 ps-0 mb-3">
+                                    <label class="form-label">Your FullName</label>
+                                    <input name="Name" type="text" class="form-control shadow-none" pattern="[A-z0-9 ]+" minlength=6 maxlength=30 required>
+                                </div>
+                                <div class="col-md-6 ps-0 mb-3">
+                                    <label class="form-label">Your username</label>
+                                    <input name="Id" type="text" class="form-control shadow-none" pattern="[A-z0-9]+" minlength=5 maxlength=20 required>
+                                </div>
+
+                                <div class="col-md-6 ps-0 mb-3">
+                                    <label class="form-label">Email address</label>
+                                    <input name="Email" type="email" class="form-control shadow-none" required>
+                                </div>
+
+                                <div class="col-md-6 ps-0 mb-3">
+                                    <label class="form-label">Phone number</label>
+                                    <input name="Phone" type="number" class="form-control shadow-none" required>
+                                </div>
+
+                                <div class="col-md-6 ps-0 mb-3">
+                                    <label class="form-label">Date of birth</label>
+                                    <input name="DateOfBirth" type="date" class="form-control shadow-none" required>
+                                </div>
+
+                                <div class="col-md-12 ps-0 mb-3">
+                                    <label class="form-label">Address</label>
+                                    <input name="Address" type="text" class="form-control shadow-none" required>
+                                </div>
+
+                                <div class="col-md-6 ps-0 mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input name="Pw" type="password" class="form-control shadow-none" minlength=6 maxlength=30 required>
+                                </div>
+
+                                <div class="col-md-6 ps-0 mb-3">
+                                    <label class="form-label">Confirm your password</label>
+                                    <input name="PwCf" type="password" class="form-control shadow-none" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-dark shadow-none">
+                                REGISTER
+                            </button><br>
+                            <a href="javascript: void(0)" data-toggle="modal" data-dismiss="modal" data-target="#loginModal" class="text-secondary text-decoration-none">
+                                Already account! Login now!
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid float-right">
+        <main role="main">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white px-lg-3 py-lg-2 shadow-sm sticky-top" id="navHome">
+                <div class="container-fluid">
+                    <a class="navbar-brand me-5 fw-bold fs-3 h-font" href="index.html">Kiot Website</a>
+                    <button class="navbar-toggler shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active me-2" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link me-2" href="#">Rooms</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link me-2" href="#">Facilities</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link me-2" asp-controller="Home" asp-action="Contact">Contact us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link me-2" href="#">About</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            @RenderBody()
+        </main>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="~/css/assets/js/bootstrap.min.js"></script>
+        <script src="~/css/assets/js/popper.min.js"></script>
+        <script src="~/css/assets/js/jquery-3.5.1.min.js"></script>
+        <script src="~/js/StateCode.js"></script>
+        <script src="~/js/HomeCode.js"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

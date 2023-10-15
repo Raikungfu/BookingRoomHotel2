@@ -1,0 +1,62 @@
+﻿@model IEnumerable<BookingRoomHotel.Models.Customer>
+
+@{
+    ViewData["Title"] = "Customer Management";
+}
+
+<h1>Customer Management</h1>
+<div>
+    <a onclick="sendJwt('/Customers/Index','')">Back to DashBoard</a>
+</div>
+<p>
+    <a class="btn btn-outline-dark shadow-none" onclick="sendJwt('/Customers/Create', '')">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    <a class="btn btn-outline-dark shadow-none" onclick="sendJwt('/Customers/Edit/', '@item.Id')">Edit</a> |
+                    <a class="btn btn-outline-dark shadow-none" onclick="sendJwt('/Customers/Details/', '@item.Id')">Details</a> |
+                    <a class="btn btn-outline-dark shadow-none" onclick="sendJwt('/Customers/Delete/', '@item.Id')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
