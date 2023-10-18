@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookingRoomHotel.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingRoomHotel.ViewModels
 {
@@ -56,5 +57,10 @@ namespace BookingRoomHotel.ViewModels
     {
         public string Id { get; set; }
         public string Email { get; set; }
+    }
+    public class ListCustomerViewModel
+    {
+        public List<Customer> ListCus { get; set; }
+        public int Count { get; set; }
     }
 }

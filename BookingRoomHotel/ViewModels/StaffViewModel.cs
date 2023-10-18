@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookingRoomHotel.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingRoomHotel.ViewModels
 {
@@ -12,5 +13,11 @@ namespace BookingRoomHotel.ViewModels
         [DataType(DataType.Password)]
         [StringLength(maximumLength: 30, MinimumLength = 6, ErrorMessage = "Length between 6 - 30")]
         public string Password { get; set; }
+    }
+
+    public class ListsStaffViewModel
+    {
+        public List<Staff> ListStaff { get; set; }
+        public int Count { get; set; }
     }
 }

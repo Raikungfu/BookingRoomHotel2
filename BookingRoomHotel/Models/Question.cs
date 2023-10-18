@@ -21,9 +21,9 @@ namespace BookingRoomHotel.Models
         [StringLength(300, ErrorMessage = "Less than 300 characters")]
         public string Message { get; set; }
         [DataType(DataType.Text)]
-        public string Response { get; set; }
+        public string? Response { get; set; }
         [DataType(DataType.Text)]
         [StringLength(10, ErrorMessage = "Error Status")]
-        public string Status { get; set; }
+        public string? Status { get; set; }
     }
 }

@@ -11,8 +11,21 @@ namespace BookingRoomHotel.Models
 		[Required]
 		public string TypeName { get; set; }
 
-		public string Description { get; set; }
-
-		public virtual ICollection<Room> Rooms { get; set; }
+        [Required]
+        public int Price { get; set; }
+        [Required]
+        public int Max { get; set; }
+        [Required]
+        public int Size { get; set; }
+        [Required]
+        public string View { get; set; }
+        [Required]
+        public int Bed { get; set; }
+        [Required]
+        public string Description1 { get; set; }
+		public string? Description2 { get; set; }
+		public string? Description3 { get; set; }
+		public virtual ICollection<Room>? Rooms { get; set; }
+		public virtual ICollection<Media>? Media { get; set; }
 	}
 }

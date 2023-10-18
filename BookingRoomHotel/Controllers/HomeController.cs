@@ -15,6 +15,10 @@ namespace BookingRoomHotel.Controllers
         {
             return View();
         }
+        public ActionResult RoomTypes()
+        {
+            return View();
+        }
 
         // GET: HomeController/Details/5
         public ActionResult Details(int id)

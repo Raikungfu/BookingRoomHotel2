@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookingRoomHotel.Models;
 using Microsoft.AspNetCore.Authorization;
+using BookingRoomHotel.ViewModels;
 
 namespace BookingRoomHotel.Controllers
 {
@@ -22,8 +23,25 @@ namespace BookingRoomHotel.Controllers
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> Index()
         {
-              return _context.Staffs != null ?
-                          PartialView(await _context.Staffs.ToListAsync()) :
+            ListsStaffViewModel listStaffViewModel = new ListsStaffViewModel();
+            listStaffViewModel.ListStaff = await _context.Staffs.OrderByDescending(x => x.Status).Take(6).ToListAsync();
+            int total = await _context.Staffs.CountAsync();
+            listStaffViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
+            return _context.Staffs != null ?
+                          PartialView(listStaffViewModel) :
+                          Problem("Entity set 'ApplicationDbContext.Staffs'  is null.");
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "AdminPolicy")]
+        public async Task<IActionResult> Index(string id)
+        {
+            ListsStaffViewModel listStaffViewModel = new ListsStaffViewModel();
+            listStaffViewModel.ListStaff = await _context.Staffs.OrderByDescending(x => x.Status).Skip(6 * (int.Parse(id) - 1)).Take(6).ToListAsync();
+            int total = await _context.Staffs.CountAsync();
+            listStaffViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
+            return _context.Staffs != null ?
+                          PartialView(listStaffViewModel) :
                           Problem("Entity set 'ApplicationDbContext.Staffs'  is null.");
         }
 
@@ -59,6 +77,7 @@ namespace BookingRoomHotel.Controllers
         {
             if (ModelState.IsValid)
             {
+                staff.Status = "Action";
                 _context.Add(staff);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

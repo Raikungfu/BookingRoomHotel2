@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("userRole").innerText = localStorage.getItem("Role");
         if (roleCus()) {
             document.getElementById("userAvt").src = "/images/customer/profile/" + localStorage.getItem("avt");
+            document.getElementById("userAvt2").src = "/images/customer/profile/" + localStorage.getItem("avt");
         }
     } else {
         document.getElementById("showLoginStaff").classList.remove("d-none");
@@ -135,6 +136,7 @@ function sendJwtAndData(endPoint, id) {
     }).catch(error => {
         alert(error);
     });
+    return false;
 }
 
 function hideLogRegBtn() {
@@ -143,7 +145,9 @@ function hideLogRegBtn() {
     document.getElementById("showName").innerText = "Welcome, " + localStorage.getItem("Name");
     document.getElementById("showName").classList.remove("d-none");
     document.getElementById("showUserAuth").classList.remove("d-none");
+    document.getElementById("showLogout").classList.remove("d-none");
     document.getElementById("showLoginStaff").classList.add("d-none");
     document.getElementById("showLogCus").classList.add("d-none");
     document.getElementById("showResCus").classList.add("d-none");
 }
+

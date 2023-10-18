@@ -24,9 +24,9 @@ namespace BookingRoomHotel.ViewModels
         [DataType(DataType.Text)]
         public string Address { get; set; }
 
-        public IFormFile ImgAvt { get; set; }
-        public IFormFile ImgIdentify1 { get; set; }
-        public IFormFile ImgIdentify2 { get; set; }
+        public IFormFile? ImgAvt { get; set; }
+        public IFormFile? ImgIdentify1 { get; set; }
+        public IFormFile? ImgIdentify2 { get; set; }
     }
 
     public class ProfileView

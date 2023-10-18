@@ -56,6 +56,28 @@ namespace BookingRoomHotel.Models
                 throw new Exception("Email could not be sent. " + ex.Message);
             }
         }
+        
+        public void SendResponseQ(string recip, string name, string title, string messageQ, string response)
+        {
+            string message = string.Format("<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    " +
+                    "<meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    " +
+                    "<title>Response your problem from Booking Room Hotel, KIOT!</title>\r\n</head>\r\n<body>\r\n    <h2>Response for your problem,</h2>\r\n    " +
+                    "<p>Hi <strong>{0},</strong></p>\r\n    " +
+                    "<p>We have received your request. Your request: <span style=\"color:red; font-style: italic;\">{1}</span></p>\r\n    " +
+                    "<p>Message: <span style=\"color:red; font-style: italic;\">{2}</span> </p>\r\n    " +
+                    "<p>Response: <span style=\"color:red; font-style: italic;\">{3}</span> </p>\r\n    " +
+                    "<p>Thank you for using our service!</p>\r\n    <p>Best Regards,</p>\r\n    " +
+                    "<p style=\"font-style: italic; font-weight: bold;\">KIOT Team</p>\r\n</body>\r\n</html>\r\n", name, title, messageQ, response);
+            try
+            {
+                checkEmailValid(recip);
+                SendMail("Send Request Successful! Booking Room Hotel, KIOT!", recip, message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Email could not be sent. " + ex.Message);
+            }
+        }
 
         public void SendChangePasswordMail(string recip, string name, string pw)
         {

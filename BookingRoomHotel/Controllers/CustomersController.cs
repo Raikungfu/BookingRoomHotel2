@@ -25,9 +25,26 @@ namespace BookingRoomHotel.Controllers
         // GET: Customers
         [Authorize(Policy = "AdminAndReceptPolicy")]
         public async Task<IActionResult> Index()
-        {
+         {
+            ListCustomerViewModel listCustomerViewModel = new ListCustomerViewModel();
+            listCustomerViewModel.ListCus = await _context.Customers.OrderByDescending(x => x.Status).Take(6).ToListAsync();
+            int total = await _context.Customers.CountAsync();
+            listCustomerViewModel.Count = total % 6 == 0? total /6 : total / 6 + 1;
             return _context.Customers != null ?
-                        PartialView(await _context.Customers.ToListAsync()) :
+                        PartialView(listCustomerViewModel):
+                        Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
+        }
+
+        [HttpPost, ActionName("Index")]
+        [Authorize(Policy = "AdminAndReceptPolicy")]
+        public async Task<IActionResult> Index(string id)
+        {
+            ListCustomerViewModel listCustomerViewModel = new ListCustomerViewModel();
+            listCustomerViewModel.ListCus = await _context.Customers.OrderByDescending(x => x.Status).Skip(6 * (int.Parse(id) - 1)).Take(6).ToListAsync();
+            int total = await _context.Customers.CountAsync();
+            listCustomerViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
+            return _context.Customers != null ?
+                        PartialView(listCustomerViewModel) :
                         Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
         }
 
@@ -96,14 +113,9 @@ namespace BookingRoomHotel.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize(Policy = "AdminPolicy")]
-        public async Task<IActionResult> Edit(string id, [FromForm][Bind("Id,Name,Email,Phone,DateOfBirth,Address,Pw")] Customer customer)
+        public async Task<IActionResult> Edit(string id, [FromForm][Bind("Id,Name,Email,Phone,DateOfBirth,Address,Pw,Status,ImgIdentify1,ImgIdentify2,ImgAvt")] Customer customer)
         {
-            if (id != customer.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
+            if (ModelState.IsValid )
             {
                 try
                 {
@@ -129,26 +141,6 @@ namespace BookingRoomHotel.Controllers
         // GET: Customers/Delete/5
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.Customers == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView(customer);
-        }
-
-        // POST: Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [Authorize(Policy = "AdminPolicy")]
-        public async Task<IActionResult> DeleteConfirmed([FromForm] string id)
         {
             if (_context.Customers == null)
             {
@@ -191,12 +183,12 @@ namespace BookingRoomHotel.Controllers
                             Email = model.Email,
                             Address = model.Address,
                             DateOfBirth = model.DateOfBirth,
-                            Phone = model.Phone
+                            Phone = model.Phone,
+                            Status = "Unverified"
                         };
                         await _context.Customers.AddAsync(cus);
                         await _context.SaveChangesAsync();
-                        TempData["Success"] = "Register Successful! Please check your email!";
-                        return Json(new { success = true, accessToken = _tokenService.GenerateAccessToken(cus.Id, cus.Name, "customer"), role = "customer", name = cus.Name });
+                        return Json(new { success = true, message = "Register Successful! Please check your email!", accessToken = _tokenService.GenerateAccessToken(cus.Id, cus.Name, "customer"), role = "customer", name = cus.Name });
                     }
                 }
                 throw new Exception("Your password does not match!");
@@ -249,8 +241,7 @@ namespace BookingRoomHotel.Controllers
                         cus.Pw = model.NewPw;
                         await _context.SaveChangesAsync();
                         _emailService.SendChangePasswordMail(cus.Email, cus.Name, cus.Pw);
-                        TempData["Success"] = "Change Password successful! Please check your email!";
-                        return Json(new { success = true });
+                        return Json(new { success = true, message = "Change Password successful! Please check your email!" });
                     }
                     else
                     {
@@ -277,9 +268,8 @@ namespace BookingRoomHotel.Controllers
                 if (cus != null && cus.Email.Equals(model.Email))
                 {
                     _emailService.SendForgotPasswordMail(cus.Email, cus.Name, cus.Pw);
-                    TempData["Success"] = "Your password has been sent via email. Please check your email!";
-                    return Json(new { success = true });
-                }
+                    return Json(new { success = true, message = "Your password has been sent via email. Please check your email!" });
+                    }
                 else
                 {
                     throw new Exception("Your ID or Email not correct!");

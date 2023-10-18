@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BookingRoomHotel.Models;
 using Microsoft.AspNetCore.Authorization;
 using BookingRoomHotel.Models.ModelsInterface;
+using BookingRoomHotel.ViewModels;
 
 namespace BookingRoomHotel.Controllers
 {
@@ -26,8 +27,25 @@ namespace BookingRoomHotel.Controllers
         [Authorize(Policy = "AdminAndReceptPolicy")]
         public async Task<IActionResult> Index()
         {
-              return _context.Question != null ?
-                          PartialView(await _context.Question.ToListAsync()) :
+            ListQuestionViewModel listQuestionViewModel = new ListQuestionViewModel();
+            listQuestionViewModel.ListQuestion = await _context.Question.OrderByDescending(x => x.Status).Take(6).ToListAsync();
+            int total = await _context.Question.CountAsync();
+            listQuestionViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
+            return _context.Question != null ?
+                          PartialView(listQuestionViewModel) :
+                          Problem("Entity set 'ApplicationDbContext.Question'  is null.");
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "AdminAndReceptPolicy")]
+        public async Task<IActionResult> Index(string id)
+        {
+            ListQuestionViewModel listQuestionViewModel = new ListQuestionViewModel();
+            listQuestionViewModel.ListQuestion = await _context.Question.OrderByDescending(x => x.Status).Skip(6 * (int.Parse(id) - 1)).Take(6).ToListAsync();
+            int total = await _context.Question.CountAsync();
+            listQuestionViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
+            return _context.Question != null ?
+                          PartialView(listQuestionViewModel) :
                           Problem("Entity set 'ApplicationDbContext.Question'  is null.");
         }
 
@@ -107,7 +125,7 @@ namespace BookingRoomHotel.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "AdminAndReceptPolicy")]
-        public async Task<IActionResult> Edit(int id, [Bind("Response,Status")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Name,Subject,Message,Response,Status")] Question question)
         {
             if (id != question.Id)
             {
@@ -120,6 +138,10 @@ namespace BookingRoomHotel.Controllers
                 {
                     _context.Update(question);
                     await _context.SaveChangesAsync();
+                    if (question.Status.Equals("Complete"))
+                    {
+                        _emailService.SendResponseQ(question.Email, question.Name, question.Subject, question.Message, question.Response);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {

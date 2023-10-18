@@ -31,6 +31,7 @@ namespace BookingRoomHotel.Models
         public string Role { get; set; }
         [DataType(DataType.Text)]
         [StringLength(10, ErrorMessage = "Error Status")]
-        public string Status { get; set; }
+        public string? Status { get; set; }
+        public ICollection<StaffNotification>? StaffNotifications { get; set; }
     }
 }

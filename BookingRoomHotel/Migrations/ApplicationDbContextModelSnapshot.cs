@@ -17,7 +17,7 @@ namespace BookingRoomHotel.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.22")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -76,15 +76,12 @@ namespace BookingRoomHotel.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgAvt")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgIdentify1")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgIdentify2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -108,6 +105,35 @@ namespace BookingRoomHotel.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("BookingRoomHotel.Models.CustomerNotification", b =>
+                {
+                    b.Property<int>("CustomerNotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerNotificationId"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CustomerNotificationId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("CustomerNotification");
                 });
 
             modelBuilder.Entity("BookingRoomHotel.Models.Hotel", b =>
@@ -150,8 +176,14 @@ namespace BookingRoomHotel.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MediaID"), 1L, 1);
 
-                    b.Property<string>("Title")
+                    b.Property<string>("For")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RoomTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
@@ -163,6 +195,8 @@ namespace BookingRoomHotel.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MediaID");
+
+                    b.HasIndex("RoomTypeID");
 
                     b.ToTable("Media");
                 });
@@ -189,11 +223,9 @@ namespace BookingRoomHotel.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Response")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
@@ -286,11 +318,33 @@ namespace BookingRoomHotel.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomTypeID"), 1L, 1);
 
-                    b.Property<string>("Description")
+                    b.Property<int>("Bed")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description1")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Max")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
                     b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("View")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -388,7 +442,6 @@ namespace BookingRoomHotel.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
@@ -397,10 +450,39 @@ namespace BookingRoomHotel.Migrations
                     b.ToTable("Staffs");
                 });
 
+            modelBuilder.Entity("BookingRoomHotel.Models.StaffNotification", b =>
+                {
+                    b.Property<int>("StaffNotificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffNotificationId"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.HasKey("StaffNotificationId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("StaffNotification");
+                });
+
             modelBuilder.Entity("BookingRoomHotel.Models.Booking", b =>
                 {
                     b.HasOne("BookingRoomHotel.Models.Customer", "Customer")
-                        .WithMany("Bookings")
+                        .WithMany()
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("BookingRoomHotel.Models.Room", "Room")
@@ -412,6 +494,24 @@ namespace BookingRoomHotel.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("BookingRoomHotel.Models.CustomerNotification", b =>
+                {
+                    b.HasOne("BookingRoomHotel.Models.Customer", "Customer")
+                        .WithMany("CustomerNotifications")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("BookingRoomHotel.Models.Media", b =>
+                {
+                    b.HasOne("BookingRoomHotel.Models.RoomType", null)
+                        .WithMany("Media")
+                        .HasForeignKey("RoomTypeID");
                 });
 
             modelBuilder.Entity("BookingRoomHotel.Models.Room", b =>
@@ -456,6 +556,17 @@ namespace BookingRoomHotel.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("BookingRoomHotel.Models.StaffNotification", b =>
+                {
+                    b.HasOne("BookingRoomHotel.Models.Staff", "Staff")
+                        .WithMany("StaffNotifications")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Staff");
+                });
+
             modelBuilder.Entity("BookingRoomHotel.Models.Booking", b =>
                 {
                     b.Navigation("ServiceBookings");
@@ -463,7 +574,7 @@ namespace BookingRoomHotel.Migrations
 
             modelBuilder.Entity("BookingRoomHotel.Models.Customer", b =>
                 {
-                    b.Navigation("Bookings");
+                    b.Navigation("CustomerNotifications");
                 });
 
             modelBuilder.Entity("BookingRoomHotel.Models.Hotel", b =>
@@ -473,12 +584,19 @@ namespace BookingRoomHotel.Migrations
 
             modelBuilder.Entity("BookingRoomHotel.Models.RoomType", b =>
                 {
+                    b.Navigation("Media");
+
                     b.Navigation("Rooms");
                 });
 
             modelBuilder.Entity("BookingRoomHotel.Models.Service", b =>
                 {
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("BookingRoomHotel.Models.Staff", b =>
+                {
+                    b.Navigation("StaffNotifications");
                 });
 #pragma warning restore 612, 618
         }

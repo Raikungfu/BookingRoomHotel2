@@ -9,11 +9,13 @@ namespace BookingRoomHotel.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IUploadFileService _uploadFileService;
 
-        public ProfileCustomerController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public ProfileCustomerController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IUploadFileService uploadFileService)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _uploadFileService = uploadFileService;
         }
 
         // GET: ProfileCustomer
@@ -34,22 +36,22 @@ namespace BookingRoomHotel.Controllers
 
             if (ModelState.IsValid)
             {
-                string profileFileName = UploadedFileProfile(model);
-                string imgidentify1 = UploadedFileImgIdentify1(model);
-                string imgidentify2 = UploadedFileImgIdentify2(model);
-
+                string profileFileName = _uploadFileService.uploadImage(model.ImgAvt, "images/customer/profile");
+                string imgidentify1 = _uploadFileService.uploadImage(model.ImgIdentify1, "images/customer/imgIdentify1");
+                string imgidentify2 = _uploadFileService.uploadImage(model.ImgIdentify2, "images/customer/imgIdentify2");
                 CustomertoUpdate.Name = model.Name;
                 CustomertoUpdate.Email = model.Email;
                 CustomertoUpdate.Phone = model.Phone;
                 CustomertoUpdate.Address = model.Address;
                 CustomertoUpdate.DateOfBirth = model.DateOfBirth;
-                CustomertoUpdate.ImgAvt = profileFileName;
-                CustomertoUpdate.ImgIdentify1 = imgidentify1;
-                CustomertoUpdate.ImgIdentify2 = imgidentify2;
+                CustomertoUpdate.ImgAvt = profileFileName == null? CustomertoUpdate.ImgAvt: profileFileName;
+                CustomertoUpdate.ImgIdentify1 = imgidentify1 == null ? CustomertoUpdate.ImgIdentify1 : imgidentify1;
+                CustomertoUpdate.ImgIdentify2 = imgidentify2 == null ? CustomertoUpdate.ImgIdentify2 : imgidentify2;
                 _context.Customers.Update(CustomertoUpdate);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            
             return View(CustomerToProfileView(CustomertoUpdate));
         }
 
@@ -68,55 +70,5 @@ namespace BookingRoomHotel.Controllers
             return cus;
         }
 
-        private string UploadedFileProfile(ProfileCustomerViewModel model)
-        {
-            string profileFileName = null;
-
-            if (model.ImgAvt != null)
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/customer/profile");
-                profileFileName = Guid.NewGuid().ToString() + "_" + model.ImgAvt.FileName;
-                string filePath = Path.Combine(uploadsFolder, profileFileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    model.ImgAvt.CopyTo(fileStream);
-                }
-            }
-            return profileFileName;
-        }
-
-        private string UploadedFileImgIdentify1(ProfileCustomerViewModel model)
-        {
-            string ImgIdentify1FileName = null;
-
-            if (model.ImgIdentify1 != null)
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/customer/imgIdentify1");
-                ImgIdentify1FileName = Guid.NewGuid().ToString() + "_" + model.ImgIdentify1.FileName;
-                string filePath = Path.Combine(uploadsFolder, ImgIdentify1FileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    model.ImgIdentify1.CopyTo(fileStream);
-                }
-            }
-            return ImgIdentify1FileName;
-        }
-
-        private string UploadedFileImgIdentify2(ProfileCustomerViewModel model)
-        {
-            string ImgIdentify2FileName = null;
-
-            if (model.ImgIdentify2 != null)
-            {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/customer/imgIdentify2");
-                ImgIdentify2FileName = Guid.NewGuid().ToString() + "_" + model.ImgIdentify2.FileName;
-                string filePath = Path.Combine(uploadsFolder, ImgIdentify2FileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    model.ImgIdentify2.CopyTo(fileStream);
-                }
-            }
-            return ImgIdentify2FileName;
-        }
     }
 }

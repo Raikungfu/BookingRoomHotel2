@@ -29,6 +29,8 @@ builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 builder.Services.AddSingleton<IEmailService, EmailService>();
 
+builder.Services.AddSingleton<IUploadFileService, UploadFileService>();
+
 builder.Services.AddSingleton<ITokenService, TokenService>();
 
 builder.Services.AddAuthorization(options =>

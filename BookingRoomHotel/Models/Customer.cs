@@ -26,14 +26,14 @@ namespace BookingRoomHotel.Models
         public string Address { get; set; }
         [DataType(DataType.Password)]
         public string Pw { get; set; }
-        public string ImgAvt { get; set; }
-        public string ImgIdentify1 { get; set; }
-        public string ImgIdentify2 { get; set; }
+        public string? ImgAvt { get; set; }
+        public string? ImgIdentify1 { get; set; }
+        public string? ImgIdentify2 { get; set; }
 
         [DataType(DataType.Text)]
         [StringLength(10, ErrorMessage = "Error Status")]
         public string Status { get; set; }
 
-		public virtual ICollection<Booking> Bookings { get; set; }
-	}
+        public ICollection<CustomerNotification>? CustomerNotifications { get; set; }
+    }
 }
