@@ -1,10 +1,10 @@
-﻿@model BookingRoomHotel.ViewModels.ListRoomTypeViewModel
+﻿@model BookingRoomHotel.ViewModels.RoomViewModel
 
 @{
     ViewData["Title"] = "Customer Management";
 }
 
-<h1>Room Types Management</h1>
+<h1>Room Management</h1>
 <div>
     <a asp-controller="Admin" asp-action="Dashboard">Back to DashBoard</a>
 </div>
@@ -13,7 +13,7 @@
     <div class="d-flex">
         <div class="card card-table flex-fill">
             <div class="card-header">
-                <h4 class="card-title float-left mt-2">Room Types</h4>
+                <h4 class="card-title float-left mt-2">Room</h4>
                 <button type="button" class="btn btn-primary float-right veiwbutton">View All</button>
             </div>
             <div class="card-body">
@@ -21,28 +21,37 @@
                     <table class="table table-hover table-center">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
+                                <th>Number</th>
+                                <th>Type</th>
+                                <th>Hotel</th>
+                                <th>Price</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.ListRoomTypes)
+                            @foreach (var item in Model.ListRoom)
                             {
                                 <tr>
                                     <td class="text-nowrap">
-                                        @Html.DisplayFor(modelItem => item.RoomTypeID)
+                                        @Html.DisplayFor(modelItem => item.RoomNumber)
                                     </td>
                                     <td class="text-nowrap">
-                                        @Html.DisplayFor(modelItem => item.TypeName)
+                                        @Html.DisplayFor(modelItem => item.RoomType.TypeName)
+                                    </td>
+                                    <td class="text-nowrap">
+                                        @Html.DisplayFor(modelItem => item.Hotel.Name)
+                                    </td>
+                                    <td class="text-nowrap">
+                                        @Html.DisplayFor(modelItem => item.Price)
                                     </td>
 
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v ellipse_color"></i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendJwt('/Customers/Edit/', '@item.RoomTypeID')"><i class="fas fa-pencil-alt m-r-5"></i> Edit</a>
-                                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendJwt('/Customers/Details/', '@item.RoomTypeID')"><i class="fas fa-id-card m-r-5"></i> Details</a>
-                                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendJwt('/Customers/Delete/', '@item.RoomTypeID')" data-toggle="modal" data-target="#delete_asset"><i class="fas fa-trash-alt m-r-5"></i> Delete</a>
+                                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendJwt('/Rooms/Edit/', '@item.RoomID')"><i class="fas fa-pencil-alt m-r-5"></i> Edit</a>
+                                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendJwt('/Rooms/Details/', '@item.RoomID')"><i class="fas fa-id-card m-r-5"></i> Details</a>
+                                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendJwt('/Rooms/Delete/', '@item.RoomID')" data-toggle="modal" data-target="#delete_asset"><i class="fas fa-trash-alt m-r-5"></i> Delete</a>
                                             </div>
                                         </div>
                                     </td>
@@ -58,7 +67,7 @@
         <ul class="pagination justify-content-center">
             @for (int i = 1; i <= Model.Count; i++)
             {
-                <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return pagination('/Customers/Index/' + '@i')">@i</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return pagination('/Rooms/Index/' + '@i')">@i</a></li>
             }
         </ul>
     </nav>
@@ -71,7 +80,7 @@
                 <h3 class="delete_class">Are you sure want to delete this Asset?</h3>
                 <div class="m-t-20">
                     <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                    <button onclick="deleteObject('/RoomTypes/Delete/')" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                    <button onclick="deleteObject('/Rooms/Delete/')" class="btn btn-danger" data-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>

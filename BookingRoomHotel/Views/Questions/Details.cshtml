@@ -10,45 +10,45 @@
     <h4>Question</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-2 mb-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10 mb-2">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2 mb-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10 mb-2">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2 mb-2">
             @Html.DisplayNameFor(model => model.Subject)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10 mb-2">
             @Html.DisplayFor(model => model.Subject)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2 mb-2">
             @Html.DisplayNameFor(model => model.Message)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10 mb-2">
             @Html.DisplayFor(model => model.Message)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2 mb-2">
             @Html.DisplayNameFor(model => model.Response)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10 mb-2">
             @Html.DisplayFor(model => model.Response)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2 mb-2">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10 mb-2">
             @Html.DisplayFor(model => model.Status)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a onclick="sendJwt('/Questions/Edit/', '@Model.Id')">Edit</a> |
+    <a onclick="return sendJwt('/Questions/Index','')">Back to List</a>
 </div>

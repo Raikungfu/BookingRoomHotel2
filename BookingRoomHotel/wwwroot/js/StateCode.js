@@ -18,6 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+
+window.addEventListener('beforeunload', () => {
+    const userId = localStorage.getItem("userId");
+    connection.invoke("RemoveFromGroup", userId).catch(err => console.error(err));
+});
+
+
+
 function checkRole() {
     return localStorage.getItem("Role") !== null;
 }
@@ -62,6 +70,7 @@ function sendToCustomerController(endPoint, form) {
         if (data.success === true) {
             if (data.accessToken !== null) localStorage.setItem("accessToken", data.accessToken);
             if (data.role !== null) localStorage.setItem("Role", data.role);
+            if (data.id !== null) localStorage.setItem("IdCus", data.id);
             if (data.name !== null) localStorage.setItem("Name", data.name);
             if (data.avt !== null) localStorage.setItem("avt", data.avt);
             hideLogRegBtn();
@@ -150,4 +159,6 @@ function hideLogRegBtn() {
     document.getElementById("showLogCus").classList.add("d-none");
     document.getElementById("showResCus").classList.add("d-none");
 }
+
+
 

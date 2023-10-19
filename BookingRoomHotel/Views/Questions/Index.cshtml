@@ -29,8 +29,8 @@
                         <tbody>
                             @foreach (var item in Model.ListQuestion)
                             {
-                                <tr onclick="sendJwt('/Questions/Details/', '@item.Id')">
-                                    <td class="text-nowrap col-8">
+                                <tr>
+                                    <td class="text-nowrap col-8" onclick="sendJwt('/Questions/Details/', '@item.Id')">
                                         @Html.DisplayFor(modelItem => item.Subject)
                                     </td>
                                     <td class="text-center col-1">
@@ -79,7 +79,7 @@
                 <h3 class="delete_class">Are you sure want to delete this Asset?</h3>
                 <div class="m-t-20">
                     <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                    <button onclick="delete('/Questions/Delete/')" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                    <button onclick="deleteObject('/Questions/Delete/')" class="btn btn-danger" data-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>

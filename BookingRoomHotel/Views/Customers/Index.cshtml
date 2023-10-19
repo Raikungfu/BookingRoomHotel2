@@ -37,19 +37,19 @@
                                     <td class="text-nowrap" onclick="sendJwt('/Customers/Details/', '@item.Id')">
                                         @Html.DisplayFor(modelItem => item.Name)
                                     </td>
-                                    <td class="text-nowrap" onclick="sendJwt('/Customers/Details/', '@item.Id')">
+                                    <td class="text-nowrap">
                                         @Html.DisplayFor(modelItem => item.Email)
                                     </td>
-                                    <td class="text-nowrap" onclick="sendJwt('/Customers/Details/', '@item.Id')">
+                                    <td class="text-nowrap">
                                         @Html.DisplayFor(modelItem => item.Phone)
                                     </td>
-                                    <td class="text-nowrap" onclick="sendJwt('/Customers/Details/', '@item.Id')">
+                                    <td class="text-nowrap">
                                         @Html.DisplayFor(modelItem => item.DateOfBirth)
                                     </td>
-                                    <td class="text-nowrap" onclick="sendJwt('/Customers/Details/', '@item.Id')">
+                                    <td class="text-nowrap">
                                         @Html.DisplayFor(modelItem => item.Address)
                                     </td>
-                                    <td class="text-center" onclick="sendJwt('/Customers/Details/', '@item.Id')">
+                                    <td class="text-center">
                                         @if (item.Status.Equals("Unverified"))
                                         {
                                             <span class="badge badge-pill bg-danger-light">@item.Status</span>
@@ -95,7 +95,7 @@
                 <h3 class="delete_class">Are you sure want to delete this Asset?</h3>
                 <div class="m-t-20">
                     <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-                    <button onclick="delete('/Customers/Delete/')" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                    <button onclick="deleteObject('/Customers/Delete/')" class="btn btn-danger" data-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>

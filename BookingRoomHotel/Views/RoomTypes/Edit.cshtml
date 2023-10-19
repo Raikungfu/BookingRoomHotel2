@@ -1,4 +1,4 @@
-﻿@model BookingRoomHotel.Models.Customer
+﻿@model BookingRoomHotel.Models.RoomType
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,88 +13,124 @@
         <a onclick="sendJwt('/Customers/Index','')">Back to List</a>
     </div>
     <div class="row">
-        <form onsubmit="return sendJwtAndData('/Customers/Edit/', '@Model.Id')" id="formData">
-            <div class="col-xl-12">
-                <div class="card mb-4">
-                    <div class="card-header">Profile Customer</div>
-                    <div class="card-body d-flex flex-wrap">
-                        <div class="col-xl-4">
-                            <div class="card mb-4 mb-xl-0">
-                                <div class="card-body text-center upload-btn-wrapper">
-                                    <img class="img-account-profile rounded-circle mb-2" height="140" width="140" src="~/images/customer/profile/@Model.ImgAvt">
-                                    <input type="hidden" id="fileInput" style="display: none;" asp-for="ImgAvt">
-                                </div>
+        <form onsubmit="return sendJwtAndData('/RoomTypes/Edit', '')" id="formData">
+            <div class="col-lg-12">
+                <div class="row formtype">
+                    <div class="col-md-4">
+                        <label asp-for="TypeName" class="control-label">Name</label>
+                        <div class="form-group">
+                            <input asp-for="TypeName" class="form-control" />
+                            <span asp-validation-for="TypeName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Bed" class="control-label">Bed Count</label>
+                            <div class="form-group">
+                                <select class="form-control" asp-for="Bed">
+                                    <option>Select</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                </select>
+                                <span asp-validation-for="Bed" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-xl-8">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="col-3 col-md-4 pl-0 mb-3">
-                                        <select class="form-select" asp-for="Status">
-                                            <option value="Unverified">Unverified</option>
-                                            <option value="Verified">Verified</option>
-                                            <option value="VIP">VIP</option>
-                                            <option value="Lock">Lock</option>
-                                        </select>
-                                    </div>
-                                    <input type="hidden" asp-for="Id" />
-                                    <input type="hidden" asp-for="Pw" />
-                                    <input type="hidden" asp-for="Status" />
-                                    <input type="hidden" asp-for="ImgIdentify2" />
-                                    <input type="hidden" asp-for="ImgIdentify1" />
-                                    <div class="mb-3">
-                                        <label class="small mb-1 control-label">Name</label>
-                                        <input class="form-control disabled" asp-for="Name">
-                                        <span asp-validation-for="Name" class="text-danger"></span>
-                                    </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Max" class="control-label">Max people</label>
+                            <div class="form-group">
+                                <select class="form-control" asp-for="Max">
+                                    <option>Select</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                </select>
+                                <span asp-validation-for="Max" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
 
-                                    <div class="mb-3">
-                                        <label asp-for="Email" class="control-label small mb-1"></label>
-                                        <input asp-for="Email" class="form-control disabled" />
-                                        <span asp-validation-for="Email" class="text-danger"></span>
-                                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Price" class="control-label"></label>
+                            <div class="custom-file mb-3">
+                                <input asp-for="Price" type="number" min="0" class="form-control" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
 
-                                    <div class="mb-3">
-                                        <label asp-for="Address" class="control-label small mb-1"></label>
-                                        <input asp-for="Address" class="form-control disabled" />
-                                        <span asp-validation-for="Address" class="text-danger"></span>
-                                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Size" class="control-label"></label>
+                            <div class="custom-file mb-3">
+                                <input asp-for="Size" type="number" min="0" class="form-control" />
+                                <span asp-validation-for="Size" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
 
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label asp-for="Phone" class="control-label small mb-1"></label>
-                                            <input asp-for="Phone" class="form-control disabled" />
-                                            <span asp-validation-for="Phone" class="text-danger"></span>
-                                        </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="View" class="control-label"></label>
+                            <div class="custom-file mb-3">
+                                <input asp-for="View" class="form-control" />
+                                <span asp-validation-for="View" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
 
-                                        <div class="col-md-6">
-                                            <label asp-for="DateOfBirth" class="control-label small mb-1"></label>
-                                            <input asp-for="DateOfBirth" class="form-control disabled" />
-                                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                                        </div>
-                                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Description 1</label>
+                            <textarea class="form-control" rows="5" asp-for="Description1"></textarea>
+                            <span asp-validation-for="Description1" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Description 2</label>
+                            <textarea class="form-control" rows="5" i asp-for="Description2"></textarea>
+                            <span asp-validation-for="Description2" class="text-danger"></span>
+                        </div>
+                    </div>
 
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="card-title">Picture Identify 1</label>
-                                            <div class="d-flex justify-content-center mb-2" width="40" height="160">
-                                                <img style="height: 10rem;" class="img-account-profile" src="~/images/customer/imgIdentify1/@Model.ImgIdentify1">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="card-title">Picture Identify 2</label>
-                                            <div class="d-flex justify-content-center mb-2" width="40" height="160">
-                                                <img style="height: 10rem;" src="~/images/customer/imgIdentify2/@Model.ImgIdentify2">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-primary" type="submit">Save changes</button>
-                                </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Description 3</label>
+                            <textarea class="form-control" rows="5" asp-for="Description3"></textarea>
+                            <span asp-validation-for="Description3" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Image Upload</label>
+                            <div class="custom-file mb-3">
+                                <input type="file" name="Images" accept="image/png, image/jpeg, image/jpg" multiple>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Video URL</label>
+                            <div class="custom-file mb-3">
+                                <input name="VideoUrl" class="form-control" type="url" placeholder="https://www.youtube.com/watch?v=qslT-yj9Oy8" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 

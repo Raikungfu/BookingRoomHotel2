@@ -34,24 +34,25 @@
 							</ul>
 						</li>
 						<li class="submenu">
-							<a href="#"><i class="fas fa-key"></i> <span> Rooms </span> <span class="menu-arrow"></span></a>
+							<a href="javascript:void(0)" onclick=" sendJwt('/Rooms/Create','')"><i class="fas fa-key"></i> <span> Rooms </span></a>
 							<ul class="submenu_class" style="display: none;">
-								<li><a href="all-rooms.html">All Rooms </a></li>
-								<li><a href="edit-room.html"> Edit Rooms </a></li>
-								<li><a href="add-room.html"> Add Rooms </a></li>
+								<li><a href="javascript:void(0)" onclick="sendJwt('/Customers/Create','')">Create new Room</a></li>
 							</ul>
 						</li>
-						<li>
+						<li class="submenu">
 							<a href="javascript:void(0)" onclick="sendJwt('/Questions/Index','')"><i class="fas fa-question"></i> <span> Question </span></a>
+							<ul class="submenu_class" style="display: none;">
+								<li><a href="javascript:void(0)" onclick="sendJwt('/Questions/ListEdit/','1')">Edit List Question</a></li>
+							</ul>
 						</li>
 						<li class="submenu">
-							<a href="javascript:void(0)" href="javascript:void(0)" onclick="sendJwt('/Staffs/Index','')"><i class="fas fa-user"></i> <span> Staff </span><span class="menu-arrow"></span></a>
+							<a href="javascript:void(0)" onclick="sendJwt('/Staffs/Index','')"><i class="fas fa-user"></i> <span> Staff </span><span class="menu-arrow"></span></a>
 							<ul class="submenu_class" style="display: none;">
 								<li><a href ="javascript:void(0)" onclick="sendJwt('/Staffs/Create','')">Create new Staff</a></li>
 							</ul>
 						</li>
 						<li class="submenu">
-							<a href="javascript:void(0)" href="javascript:void(0)" onclick="sendJwt('/RoomTypes/Index','')"><i class="fa-solid fa-city"></i><span> Room Types </span> <span class="menu-arrow"></span></a>
+							<a href="javascript:void(0)" href="javascript:void(0)" onclick="sendJwt('/RoomTypes/Index','')"><i class="fas fa-key"></i><span> Room Types </span> <span class="menu-arrow"></span></a>
 							<ul class="submenu_class" style="display: none;">
 								<li><a href="javascript:void(0)" onclick="sendJwt('/RoomTypes/Create','')">Add new</a></li>
 							</ul>

@@ -23,12 +23,8 @@ namespace BookingRoomHotel.Controllers
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> Index()
         {
-            ListsStaffViewModel listStaffViewModel = new ListsStaffViewModel();
-            listStaffViewModel.ListStaff = await _context.Staffs.OrderByDescending(x => x.Status).Take(6).ToListAsync();
-            int total = await _context.Staffs.CountAsync();
-            listStaffViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
             return _context.Staffs != null ?
-                          PartialView(listStaffViewModel) :
+                          PartialView(await getListViewStaff("1")) :
                           Problem("Entity set 'ApplicationDbContext.Staffs'  is null.");
         }
 
@@ -36,12 +32,8 @@ namespace BookingRoomHotel.Controllers
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> Index(string id)
         {
-            ListsStaffViewModel listStaffViewModel = new ListsStaffViewModel();
-            listStaffViewModel.ListStaff = await _context.Staffs.OrderByDescending(x => x.Status).Skip(6 * (int.Parse(id) - 1)).Take(6).ToListAsync();
-            int total = await _context.Staffs.CountAsync();
-            listStaffViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
             return _context.Staffs != null ?
-                          PartialView(listStaffViewModel) :
+                          PartialView(await getListViewStaff(id)) :
                           Problem("Entity set 'ApplicationDbContext.Staffs'  is null.");
         }
 
@@ -174,6 +166,15 @@ namespace BookingRoomHotel.Controllers
         private bool StaffExists(string id)
         {
           return (_context.Staffs?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        public async Task<ListsStaffViewModel> getListViewStaff(string id)
+        {
+            ListsStaffViewModel listStaffViewModel = new ListsStaffViewModel();
+            listStaffViewModel.ListStaff = await _context.Staffs.OrderByDescending(x => x.Status).Skip(6 * (int.Parse(id) - 1)).Take(6).ToListAsync();
+            int total = await _context.Staffs.CountAsync();
+            listStaffViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
+            return listStaffViewModel;
         }
     }
 }

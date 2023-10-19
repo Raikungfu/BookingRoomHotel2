@@ -1,0 +1,39 @@
+﻿
+
+
+
+
+
+
+
+<script>
+    const express = require('express');
+    const http = require('http');
+    const WebSocket = require('ws');
+
+    const app = express();
+    const server = http.createServer(app);
+    const wss = new WebSocket.Server({ server });
+
+    const onlineUsers = new Set();
+
+    app.use(express.static('public'));
+
+    wss.on('connection', (ws, req) => {
+        const userId = req.url.replace('/', '');
+        onlineUsers.add(userId);
+
+        ws.on('close', () => {
+            onlineUsers.delete(userId);
+        });
+    });
+    app.get('/online-users', (req, res) => {
+        res.json(Array.from(onlineUsers));
+    });
+
+    server.listen(8080, () => {
+        console.log('WebSocket server is listening on port 8080');
+    });
+</script>
+
+

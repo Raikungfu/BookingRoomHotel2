@@ -16,7 +16,8 @@
     });
     return false;
 }
-function sendJwt(endPoint, id) {
+
+function sendJwtToDelete(endPoint, id) {
     if (id !== '') {
         endPoint += id;
     }
@@ -37,9 +38,10 @@ function sendJwt(endPoint, id) {
     });
     return false;
 }
+
 var idDel;
-function delete(endPoint) {
-    sendJwt(endPoint, idDel);
+function deleteObject (endPoint) {
+    sendJwtToDelete(endPoint, idDel);
 }
 
 function setIdToDelete(id) {

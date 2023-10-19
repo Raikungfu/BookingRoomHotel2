@@ -210,7 +210,7 @@ namespace BookingRoomHotel.Controllers
                     if (cus != null && cus.Pw.Equals(model.Password))
                     {
                         HttpContext.Session.SetString("CustomerId", model.UserName);
-                        return Json(new { success = true, message = "Login Successful!", accessToken = _tokenService.GenerateAccessToken(cus.Id, cus.Name, "customer"), role = "customer", name = cus.Name, avt = cus.ImgAvt });
+                        return Json(new { success = true, message = "Login Successful!", accessToken = _tokenService.GenerateAccessToken(cus.Id, cus.Name, "customer"), role = "customer", name = cus.Name, avt = cus.ImgAvt, id = cus.Id });
                     }
                     else
                     {
@@ -280,5 +280,8 @@ namespace BookingRoomHotel.Controllers
                 return Json(new { success = false, error = "Get password Failed! Error: " + ex.Message });
             }
         }
+
+
+        
     }
 }

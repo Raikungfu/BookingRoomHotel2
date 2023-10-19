@@ -1,83 +1,177 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BookingRoomHotel.Models;
+using BookingRoomHotel.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingRoomHotel.Controllers
 {
 	public class BookingsController : Controller
 	{
-		// GET: BookingsController
-		public ActionResult Index()
-		{
-			return View();
-		}
+        // GET: BookingsController
+        private readonly ApplicationDbContext _context;
+        public BookingsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-		// GET: BookingsController/Details/5
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
+        // GET: Bookings
+        [Authorize(Policy = "AdminPolicy")]
+        public async Task<IActionResult> Index()
+        {
+            return _context.Bookings != null ?
+                          PartialView(await getListViewBooking("1")) :
+                          Problem("Entity set 'ApplicationDbContext.Bookings'  is null.");
+        }
 
-		// GET: BookingsController/Create
-		public ActionResult Create()
-		{
-			return View();
-		}
+        [HttpPost]
+        [Authorize(Policy = "AdminPolicy")]
+        public async Task<IActionResult> Index(string id)
+        {
+            return _context.Bookings != null ?
+                          PartialView(await getListViewBooking(id)) :
+                          Problem("Entity set 'ApplicationDbContext.Bookings'  is null.");
+        }
 
-		// POST: BookingsController/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
+        // GET: Bookings/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null || _context.Bookings == null)
+            {
+                return NotFound();
+            }
 
-		// GET: BookingsController/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
+            var booking = await _context.Bookings
+                .FirstOrDefaultAsync(m => m.BookingID == int.Parse(id));
+            if (booking == null)
+            {
+                return NotFound();
+            }
 
-		// POST: BookingsController/Edit/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
+            return PartialView(booking);
+        }
 
-		// GET: BookingsController/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
+        // GET: Bookings/Create
+        public IActionResult Create()
+        {
+            return PartialView();
+        }
 
-		// POST: BookingsController/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
-	}
+        // POST: Bookings/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm][Bind("Id,Name,Email,Phone,DateOfBirth,Address,Pw,Role")] Booking booking)
+        {
+            if (ModelState.IsValid)
+            {
+                booking.Status = "Action";
+                _context.Add(booking);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return PartialView(booking);
+        }
+
+        // GET: Bookings/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null || _context.Bookings == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _context.Bookings.FindAsync(id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            return PartialView(booking);
+        }
+
+        // POST: Bookings/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, [FromForm][Bind("Id,Name,Email,Phone,DateOfBirth,Address,Pw,Role")] Booking booking)
+        {
+            if (int.Parse(id) != booking.BookingID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(booking);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!bookingExists(booking.BookingID.ToString()))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return PartialView(booking);
+        }
+
+        // GET: Bookings/Delete/5
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null || _context.Bookings == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _context.Bookings
+                .FirstOrDefaultAsync(m => m.BookingID == int.Parse(id));
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(booking);
+        }
+
+        // POST: Bookings/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed([FromForm] string id)
+        {
+            if (_context.Bookings == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Bookings'  is null.");
+            }
+            var booking = await _context.Bookings.FindAsync(id);
+            if (booking != null)
+            {
+                _context.Bookings.Remove(booking);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool bookingExists(string id)
+        {
+            return (_context.Bookings?.Any(e => e.BookingID == int.Parse(id))).GetValueOrDefault();
+        }
+
+        public async Task<BookingViewModel> getListViewBooking(string id)
+        {
+            BookingViewModel listBooking = new BookingViewModel();
+            listBooking.ListBooking = await _context.Bookings.OrderByDescending(x => x.BookingID).Skip(6 * (int.Parse(id) - 1)).Take(6).ToListAsync();
+            int total = await _context.Bookings.CountAsync();
+            listBooking.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
+            return listBooking;
+        }
+    }
 }

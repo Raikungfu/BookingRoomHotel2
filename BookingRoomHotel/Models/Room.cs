@@ -7,8 +7,8 @@ namespace BookingRoomHotel.Models
 		[Key]
 		public int RoomID { get; set; }
 
-		public int HotelID { get; set; }
-		public int RoomTypeID { get; set; }
+		public int? HotelID { get; set; }
+		public int? RoomTypeID { get; set; }
 
 		public int RoomNumber { get; set; }
 
@@ -16,8 +16,8 @@ namespace BookingRoomHotel.Models
 		public int Price { get; set; }
 
 		public string Describe { get; set; }
-		public virtual Hotel Hotel { get; set; }
+		public virtual Hotel? Hotel { get; set; }
 
-		public virtual RoomType RoomType { get; set; }
+		public virtual RoomType? RoomType { get; set; }
 	}
 }

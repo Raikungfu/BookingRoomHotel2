@@ -27,12 +27,8 @@ namespace BookingRoomHotel.Controllers
         [Authorize(Policy = "AdminAndReceptPolicy")]
         public async Task<IActionResult> Index()
         {
-            ListQuestionViewModel listQuestionViewModel = new ListQuestionViewModel();
-            listQuestionViewModel.ListQuestion = await _context.Question.OrderByDescending(x => x.Status).Take(6).ToListAsync();
-            int total = await _context.Question.CountAsync();
-            listQuestionViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
             return _context.Question != null ?
-                          PartialView(listQuestionViewModel) :
+                          PartialView(await getListViewQuestion("1")) :
                           Problem("Entity set 'ApplicationDbContext.Question'  is null.");
         }
 
@@ -40,12 +36,8 @@ namespace BookingRoomHotel.Controllers
         [Authorize(Policy = "AdminAndReceptPolicy")]
         public async Task<IActionResult> Index(string id)
         {
-            ListQuestionViewModel listQuestionViewModel = new ListQuestionViewModel();
-            listQuestionViewModel.ListQuestion = await _context.Question.OrderByDescending(x => x.Status).Skip(6 * (int.Parse(id) - 1)).Take(6).ToListAsync();
-            int total = await _context.Question.CountAsync();
-            listQuestionViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
             return _context.Question != null ?
-                          PartialView(listQuestionViewModel) :
+                          PartialView(await getListViewQuestion(id)) :
                           Problem("Entity set 'ApplicationDbContext.Question'  is null.");
         }
 
@@ -119,11 +111,56 @@ namespace BookingRoomHotel.Controllers
             return PartialView(question);
         }
 
+        [Authorize(Policy = "AdminAndReceptPolicy")]
+        public async Task<IActionResult> ListEdit(string id)
+        {
+            return _context.Question != null ?
+                          PartialView(await getListViewQuestion(id)) :
+                          Problem("Entity set 'ApplicationDbContext.Question'  is null.");
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "AdminAndReceptPolicy")]
+        public async Task<IActionResult> ListEdit(int id, [Bind("Id,Email,Name,Subject,Message,Response,Status")] Question question)
+        {
+            if (id != question.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(question);
+                    await _context.SaveChangesAsync();
+                    if (question.Status.Equals("Complete"))
+                    {
+                        _emailService.SendResponseQ(question.Email, question.Name, question.Subject, question.Message, question.Response);
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuestionExists(question.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return _context.Question != null ?
+                          PartialView(await getListViewQuestion("1")) :
+                          Problem("Entity set 'ApplicationDbContext.Question'  is null.");
+            }
+            return PartialView(question);
+        }
+
         // POST: Questions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize(Policy = "AdminAndReceptPolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Name,Subject,Message,Response,Status")] Question question)
         {
@@ -159,31 +196,9 @@ namespace BookingRoomHotel.Controllers
             return PartialView(question);
         }
 
-        // GET: Questions/Delete/5
         [Authorize(Policy = "AdminAndReceptPolicy")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Question == null)
-            {
-                return NotFound();
-            }
-
-            var question = await _context.Question
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView(question);
-        }
-
-        // POST: Questions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Policy = "AdminAndReceptPolicy")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<IActionResult> Delete(string id)
+         {
             if (_context.Question == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Question'  is null.");
@@ -201,6 +216,15 @@ namespace BookingRoomHotel.Controllers
         private bool QuestionExists(int id)
         {
           return (_context.Question?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        public async Task<ListQuestionViewModel> getListViewQuestion(string id)
+        {
+            ListQuestionViewModel listQuestionViewModel = new ListQuestionViewModel();
+            listQuestionViewModel.ListQuestion = await _context.Question.OrderBy(x => x.Status == "Pending" ? 1 : x.Status == "Processing" ? 2 : x.Status == "Complete" ? 3 : 4).Skip(6 * (int.Parse(id) - 1)).Take(6).ToListAsync();
+            int total = await _context.Question.CountAsync();
+            listQuestionViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
+            return listQuestionViewModel;
         }
     }
 }

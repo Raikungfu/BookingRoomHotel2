@@ -1,10 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BookingRoomHotel.Models;
+using BookingRoomHotel.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingRoomHotel.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        public HomeController(ApplicationDbContext context) 
+        {
+            _context = context;
+        }
         // GET: HomeController
         public ActionResult Index()
         {
@@ -12,10 +20,6 @@ namespace BookingRoomHotel.Controllers
         }
 
         public ActionResult Contact()
-        {
-            return View();
-        }
-        public ActionResult RoomTypes()
         {
             return View();
         }
@@ -87,6 +91,22 @@ namespace BookingRoomHotel.Controllers
             {
                 return View();
             }
+        }
+
+
+        public async Task<IActionResult> RoomTypes()
+        {
+            var listRoomTypes = await _context.RoomTypes.ToListAsync();
+            return View(listRoomTypes);
+        }
+
+        public async Task<IActionResult> RoomTypeDetail(string id)
+        {
+            var roomType = await _context.RoomTypes.Include(rt => rt.Media).FirstOrDefaultAsync(rt => rt.RoomTypeID == int.Parse(id));
+            RoomTypeDetail roomTypeDetail = new RoomTypeDetail();
+            roomTypeDetail.ListMedia = roomType.Media.ToList();
+            roomTypeDetail.RoomType = roomType;
+            return View(roomTypeDetail);
         }
     }
 }
