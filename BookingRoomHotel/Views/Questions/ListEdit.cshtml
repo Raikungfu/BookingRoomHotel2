@@ -5,17 +5,10 @@
 }
 
 
-<div class="content container-fluid">
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h4 class="page-title mt-5">Edit questions</h4>
-            </div>
-        </div>
-    </div>
+<div class="mt-5">
 
     <div>
-        <a onclick="sendJwt('/Questions/Index','')">Back to List</a>
+        <a onclick="sendJwt('/Questions/Index','')" class="btn btn-primary">Back to List</a>
     </div>
     @foreach (var item in Model.ListQuestion)
     {
@@ -89,7 +82,7 @@
         <ul class="pagination justify-content-center">
             @for (int i = 1; i <= Model.Count; i++)
             {
-                <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return pagination('/Questions/EditListQuestion/' + '@i')">@i</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return pagination('/Questions/ListEdit/' + '@i')">@i</a></li>
             }
         </ul>
     </nav>

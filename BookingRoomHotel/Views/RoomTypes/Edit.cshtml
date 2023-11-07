@@ -5,17 +5,15 @@
 }
 
 
-<div class="container-xl px-4 mt-4">
-    <nav class="nav nav-borders">
-        <h1>Profile</h1>
-    </nav>
+<div class="mt-5">
     <div>
-        <a onclick="sendJwt('/Customers/Index','')">Back to List</a>
+        <a class="btn btn-primary" onclick="sendJwt('/RoomTypes/Index','')">Back to List</a>
     </div>
-    <div class="row">
-        <form onsubmit="return sendJwtAndData('/RoomTypes/Edit', '')" id="formData">
+    <div >
+        <form onsubmit="return sendJwtAndData('/RoomTypes/Edit/', '@Model.RoomTypeID')" id="formData">
             <div class="col-lg-12">
                 <div class="row formtype">
+                    <input type="hidden" asp-for="RoomTypeID" />
                     <div class="col-md-4">
                         <label asp-for="TypeName" class="control-label">Name</label>
                         <div class="form-group">
@@ -60,10 +58,20 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label asp-for="Price" class="control-label"></label>
+                            <label asp-for="PriceFrom" class="control-label"></label>
                             <div class="custom-file mb-3">
-                                <input asp-for="Price" type="number" min="0" class="form-control" />
-                                <span asp-validation-for="Price" class="text-danger"></span>
+                                <input asp-for="PriceFrom" type="number" min="0" class="form-control" />
+                                <span asp-validation-for="PriceFrom" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PriceTo" class="control-label"></label>
+                            <div class="custom-file mb-3">
+                                <input asp-for="PriceTo" type="number" min="0" class="form-control" />
+                                <span asp-validation-for="PriceTo" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -115,16 +123,16 @@
                         <div class="form-group">
                             <label>Image Upload</label>
                             <div class="custom-file mb-3">
-                                <input type="file" name="Images" accept="image/png, image/jpeg, image/jpg" multiple>
+                                <input type="file" name="Images" accept="image/*" multiple>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Video URL</label>
+                            <label>Youtube Video ID</label>
                             <div class="custom-file mb-3">
-                                <input name="VideoUrl" class="form-control" type="url" placeholder="https://www.youtube.com/watch?v=qslT-yj9Oy8" />
+                                <input name="VideoID" class="form-control"/>
                             </div>
                         </div>
                     </div>

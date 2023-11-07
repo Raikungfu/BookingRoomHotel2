@@ -4,6 +4,8 @@ using BookingRoomHotel.Models;
 using BookingRoomHotel.ViewModels;
 using BookingRoomHotel.Models.ModelsInterface;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace BookingRoomHotel.Controllers
 {
@@ -186,6 +188,7 @@ namespace BookingRoomHotel.Controllers
                             Phone = model.Phone,
                             Status = "Unverified"
                         };
+                        HttpContext.Session.SetString("CustomerId", model.Id);
                         await _context.Customers.AddAsync(cus);
                         await _context.SaveChangesAsync();
                         return Json(new { success = true, message = "Register Successful! Please check your email!", accessToken = _tokenService.GenerateAccessToken(cus.Id, cus.Name, "customer"), role = "customer", name = cus.Name });
@@ -206,11 +209,17 @@ namespace BookingRoomHotel.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var cus = await _context.Customers.FindAsync(model.UserName);
+                    var cus = await _context.Customers.Include(r => r.CustomerNotifications).FirstOrDefaultAsync(x => x.Id == model.UserName);
                     if (cus != null && cus.Pw.Equals(model.Password))
                     {
                         HttpContext.Session.SetString("CustomerId", model.UserName);
-                        return Json(new { success = true, message = "Login Successful!", accessToken = _tokenService.GenerateAccessToken(cus.Id, cus.Name, "customer"), role = "customer", name = cus.Name, avt = cus.ImgAvt, id = cus.Id });
+                        JsonSerializerOptions options = new()
+                        {
+                            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                            WriteIndented = true
+                        };
+                        string listNoti = JsonSerializer.Serialize(cus.CustomerNotifications.ToList(), options);
+                        return Json(new { success = true, message = "Login Successful!", accessToken = _tokenService.GenerateAccessToken(cus.Id, cus.Name, "customer"), role = "customer", name = cus.Name, avt = cus.ImgAvt, id = cus.Id, listNoti = listNoti });
                     }
                     else
                     {

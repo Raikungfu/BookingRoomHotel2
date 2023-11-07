@@ -13,11 +13,9 @@ namespace BookingRoomHotel.Models
 
         [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
-        public string Id { get; set; }
-        public bool IsRead { get; set; }
+        public string StaffId { get; set; }
+        public string Title { get; set; }
 
-        [ForeignKey("Id")]
-        public Staff Staff { get; set; }
     }
 
 }

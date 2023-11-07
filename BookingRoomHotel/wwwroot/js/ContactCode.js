@@ -8,10 +8,16 @@
         if (response.ok) return response.json;
         else throw new Exception(response.status);
     }).then(data => {
-        if (data.success == true) {
-            document.getElementById('successMessage').innerHTML = data.message;
-            $('#successModal').modal('show');
-        } else throw new Exception(data.error);
+        try {
+            dataJson = data.json;
+            if (dataJson.success == true) {
+                document.getElementById('successMessage').innerHTML = dataJson.message;
+                $('#successModal').modal('show');
+            } else throw new Exception(dataJson.error);
+        } catch (err) {
+            document.getElementById("body_content").innerHTML = data.text;
+        }
+        
     }).then(error => {
         document.getElementById('errorMessage').innerHTML = error;
         $('#errorModal').modal('show');

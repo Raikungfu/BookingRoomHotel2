@@ -24,7 +24,7 @@ namespace BookingRoomHotel.Controllers
             var CustomerId = HttpContext.Session.GetString("CustomerId");
             var Customer = await _context.Customers.FindAsync(CustomerId);
             return (Customer == null) ?
-				Problem("Entity set 'ApplicationDbContext.Customers'  is null.") : View(CustomerToProfileView(Customer));
+                RedirectToAction("Error","Home") : View(CustomerToProfileView(Customer));
         }
 
         [HttpPost]

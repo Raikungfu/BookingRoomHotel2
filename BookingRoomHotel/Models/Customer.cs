@@ -34,6 +34,6 @@ namespace BookingRoomHotel.Models
         [StringLength(10, ErrorMessage = "Error Status")]
         public string Status { get; set; }
 
-        public ICollection<CustomerNotification>? CustomerNotifications { get; set; }
+        public virtual ICollection<CustomerNotification>? CustomerNotifications { get; set; }
     }
 }

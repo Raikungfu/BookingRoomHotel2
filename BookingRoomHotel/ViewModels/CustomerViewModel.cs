@@ -10,6 +10,8 @@ namespace BookingRoomHotel.ViewModels
         public CusChangePwViewModel CusChangePwViewModel { get; set; }
         public CusForgotPasswordViewModel CusForgotPasswordViewModel { get; set; }
         public CusViewModel CusViewModel { get; set; }
+        public HomeViewModel HomeViewModel { get; set; }
+        public SearchRoomViewModel SearchRoomViewModel { get; set; }
 
     }
     public class CusRegisterViewModel
@@ -63,4 +65,51 @@ namespace BookingRoomHotel.ViewModels
         public List<Customer> ListCus { get; set; }
         public int Count { get; set; }
     }
+
+    public class HomeViewModel
+    {
+        public List<Room> ListRoomsRandom { get; set; }
+    }
+
+    public class SearchRoomViewModel : IValidatableObject
+    {
+        public DateTime? CheckInDate { get; set; }
+        public DateTime? CheckOutDate { get; set; }
+        public int? RoomType { get; set; }
+        public int? AreaFrom { get; set; }
+        public int? AreaTo { get; set; }
+        public int? PriceFrom { get; set; }
+        public int? PriceTo { get; set; }
+        public int? Adult { get; set; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (CheckInDate > CheckOutDate)
+            {
+                yield return new ValidationResult("Check Out Date must be greater than or equal to the Check In Date.", new[] { "CheckInDate" });
+            }
+        }
+    }
+
+    public class BookViewModel : IValidatableObject
+    {
+        [Required(ErrorMessage = "Check-in Date is a required field!")]
+        public DateTime CheckInDate { get; set; }
+        [Required(ErrorMessage = "Check-out Date is a required field!")]
+        public DateTime CheckOutDate { get; set; }
+        [Required]
+        public int RoomID { get; set; }
+
+        [Required(ErrorMessage = "Login before Booking Room!")]
+        public string CustomerId { get; set; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (CheckInDate > CheckOutDate)
+            {
+                yield return new ValidationResult("Check Out Date must be greater than or equal to the Check In Date.", new[] { "CheckInDate", "CheckOutDate" });
+            }
+
+
+        }
+    }
+
 }

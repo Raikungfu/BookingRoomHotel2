@@ -1,5 +1,4 @@
-﻿@Html.ValidationSummary()
-@model BookingRoomHotel.ViewModels.CustomerViewModel
+﻿@model BookingRoomHotel.ViewModels.CustomerViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +26,6 @@
     <link rel="stylesheet" href="~/css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="~/css/flaticon.css">
     <link rel="stylesheet" href="~/css/icomoon.css">
-
     <style>
         * {
             font-family: 'Poppins', sans-serif;
@@ -109,19 +107,20 @@
         </div>
     </section>
 
+
     <!-- Check availablity Once -->
     <section class="ftco-booking">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <form action="#" class="booking-form">
+                    <form asp-action="Index" asp-controller="Home" onsubmit="saveSearchInfo()" class="booking-form" id="formSearch">
                         <div class="row justify-content-between">
                             <div class="col-md-2 d-flex">
                                 <div class="form-group p-4 align-self-stretch d-flex align-items-center">
                                     <div class="wrap">
                                         <label for="#">Check-in</label>
                                         <div class="select-wrap">
-                                            <input type="text" class="form-control checkin_date" placeholder="">
+                                            <input asp-for="SearchRoomViewModel.CheckInDate" name="CheckInDate" type="text" class="form-control checkin_date">
                                             <div class="icon"><span class="bi bi-caret-down"></span></div>
                                         </div>
                                     </div>
@@ -132,7 +131,7 @@
                                     <div class="wrap">
                                         <label for="#">Check-out</label>
                                         <div class="select-wrap">
-                                            <input type="text" class="form-control checkout_date" placeholder="">
+                                            <input asp-for="SearchRoomViewModel.CheckOutDate" name="CheckOutDate" type="text" class="form-control checkout_date" placeholder="">
                                             <div class="icon"><span class="bi bi-caret-down"></span></div>
                                         </div>
                                     </div>
@@ -145,16 +144,15 @@
                                         <div class="form-field">
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="bi bi-caret-down"></span></div>
-                                                <select name="" id="" class="form-control">
-                                                    <div class="select-wrap">
-                                                        <span class="bi bi-caret-down"></span>
+                                                <select asp-for="SearchRoomViewModel.RoomType" name="RoomType" id="" class="form-control">
+                                                    <span class="bi bi-caret-down"></span>
                                                     <option value="" style="display:none;"></option>
-                                                    <option value="">Suite Room</option>
-                                                    <option value="">Family Room</option>
-                                                    <option value="">Deluxe Room</option>
-                                                    <option value="">Classic Room</option>
-                                                    <option value="">Superior Room</option>
-                                                    <option value="">Luxury Room</option>
+                                                    <option value="1">Suite Room</option>
+                                                    <option value="2">Classic Room</option>
+                                                    <option value="3">Family Room</option>
+                                                    <option value="4">Deluxe Room</option>
+                                                    <option value="5">Superior Room</option>
+                                                    <option value="6">Luxury Room</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -164,19 +162,11 @@
                             <div class="col-md-2 d-flex">
                                 <div class="form-group p-4 align-self-stretch d-flex align-items-center">
                                     <div class="wrap">
-                                        <label for="#">Adult</label>
+                                        <label for="#">Area</label>
                                         <div class="form-field">
                                             <div class="select-wrap">
-                                                <div class="icon"><span class="bi bi-caret-down"></span></div>
-                                                <select name="" id="" class="form-control">
-                                                    <option value="" style="display:none;"></option>
-                                                    <option value="">1 Adult</option>
-                                                    <option value="">2 Adult</option>
-                                                    <option value="">3 Adult</option>
-                                                    <option value="">4 Adult</option>
-                                                    <option value="">5 Adult</option>
-                                                    <option value="">6 Adult</option>
-                                                </select>
+                                                <span> > </span><output id="outArea">30</output><span> m<sup>2</sup></span>
+                                                <input asp-for="SearchRoomViewModel.AreaFrom" name="Area" type="range" value="30" min="30" step="5" max="100" oninput="document.getElementById('outArea').value = this.value">
                                             </div>
                                         </div>
                                     </div>
@@ -185,19 +175,11 @@
                             <div class="col-md-2 d-flex">
                                 <div class="form-group p-4 align-self-stretch d-flex align-items-center">
                                     <div class="wrap">
-                                        <label for="#">Children</label>
+                                        <label for="#">Price</label>
                                         <div class="form-field">
                                             <div class="select-wrap">
-                                                <div class="icon"><span class="bi bi-caret-down"></span></div>
-                                                <select name="" id="" class="form-control">
-                                                    <option value="" style="display:none;"></option>
-                                                    <option value="">None</option>
-                                                    <option value="">1 Children</option>
-                                                    <option value="">2 Children</option>
-                                                    <option value="">3 Children</option>
-                                                    <option value="">4 Children</option>
-                                                    <option value="">5 Children</option>
-                                                </select>
+                                                <span> > </span><output id="outPrice">100</output><span> $</span>
+                                                <input asp-for="SearchRoomViewModel.PriceFrom" name="Price" type="range" value="100" min="100" step="100" max="5000" oninput="document.getElementById('outPrice').value = this.value">
                                             </div>
                                         </div>
                                     </div>
@@ -205,238 +187,17 @@
                             </div>
                             <div class="col-md d-flex">
                                 <div class="form-group d-flex align-self-stretch">
-                                    <input type="submit" value="Check Availability" class="btn btn-primary py-3 px-4 align-self-stretch">
+                                    <input type="submit" class="btn btn-primary py-3 px-4 align-self-stretch">
                                 </div>
                             </div>
                         </div>
+                        <span id="SearchError" class="text-danger"></span>
                     </form>
                 </div>
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
             </div>
         </div>
     </section>
-    <!-- Check availablity Twice -->
-    <!--
-    <div class="container avai-form">
-        <div class="row">
-            <div class="col-lg-12 bg-white shadow p-4 rounded">
-                <h5 class="mb-3">Check Booking Availability</h5>
-                <form>
-
-                    <div class="row align-items-end">
-                        <div class="col-lg-3 mb-3">
-                            <label class="form-label" style="font-weight: 500;">Check-in</label>
-                            <input type="date" class="form-control shadow-none">
-                        </div>
-
-                        <div class="col-lg-3 mb-3">
-
-                            <label class="form-label" style="font-weight: 500;">Check-out</label>
-                            <input type="date" class="form-control shadow-none">
-                        </div>
-
-                        <div class="col-lg-3 mb-3">
-                            <label class="form-label" style="font-weight: 500;">Adult</label>
-                            <select class="form-select shadow-none">
-                                <option selected>Select options</option>
-                                <option value="1">One people</option>
-                                <option value="2">Two people</option>
-                                <option value="3">Three people</option>
-                                <option value="4">Four people</option>
-                              </select>
-                        </div>
-
-                        <div class="col-lg-2 mb-3">
-                            <label class="form-label" style="font-weight: 500;">Children</label>
-
-                            <select class="form-select shadow-none">
-                                <option selected>Select options </option>
-                                <option value="0">None</option>
-                                <option value="1">One people</option>
-                                <option value="2">Two people</option>
-                                <option value="3">Three people</option>
-                                <option value="4">Four people</option>
-                              </select>
-                        </div>
-
-                        <div class="col-lg-1 mb-lg-3 mt-2">
-                            <button type="submit" class="btn text-white shadow-none custom-bg">Submit</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    -->
-    <!-- Our rooms-->
-    <!--<div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card border-0 shadow" style="width: 350px; margin: auto;">
-                        <img src="https://toplist.vn/images/800px/silk-path-grand-hue-hotel-amp-spa-657607.jpg" class="card-img-top" alt="">
-
-                        <div class="card-body">
-                            <h5 class="">Name of the room</h5>
-                            <h6>Price: 200$ per night</h6>
-                            <div class="features mb-1">
-                                    <h6 class="mb-1">Features</h6>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        2 rooms
-                                    </span>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        2 bathrooms
-                                    </span>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        3 sofas
-                                    </span>
-                            </div>
-
-                            <div class="facilities mb-1">
-                                <h6 class="mb-1">
-                                        Facilities
-                                </h6>
-                                <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                    Television
-                                </span>
-                                <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                    Wifi/5G
-                                </span>
-                            </div>
-
-                            <div class="rating mb-1">
-                                <h6 class="mb-1">Rating</h6>
-                                <span class="badge rounded-pill bg-light">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                </span>
-                            </div>
-
-                            <div class="d-flex justify-content-evenly mb-2">
-                                <a href="" class="btn btn-sm text-white custom-bg shadow-none" style="margin-right: 50px;">Book now</a>
-
-                                <a href="" class="btn btn-primary">More details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="card border-0 shadow" style="width: 350px; margin: auto;">
-                        <img src="https://toplist.vn/images/800px/silk-path-grand-hue-hotel-amp-spa-657607.jpg" class="card-img-top" alt="">
-
-                        <div class="card-body">
-                            <h5 class="">Name of the room</h5>
-                            <h6>Price: 200$ per night</h6>
-                            <div class="features mb-1">
-                                    <h6 class="mb-1">Features</h6>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        2 rooms
-                                    </span>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        2 bathrooms
-                                    </span>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        3 sofas
-                                    </span>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        3 sofas
-                                    </span>
-                            </div>
-
-                            <div class="facilities mb-1">
-                                <h6 class="mb-1">
-                                        Facilities
-                                </h6>
-                                <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                    Television
-                                </span>
-                                <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                    Wifi/5G
-                                </span>
-                            </div>
-
-                            <div class="rating mb-1">
-                                <h6 class="mb-1">Rating</h6>
-                                <span class="badge rounded-pill bg-light">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                </span>
-                            </div>
-
-                            <div class="d-flex justify-content-evenly mb-2">
-                                <a href="" class="btn btn-sm text-white custom-bg shadow-none" style="margin-right: 50px;">Book now</a>
-
-                                <a href="" class="btn btn-primary">More details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="card border-0 shadow" style="width: 350px; margin: auto;">
-                        <img src="https://toplist.vn/images/800px/silk-path-grand-hue-hotel-amp-spa-657607.jpg" class="card-img-top" alt="">
-
-                        <div class="card-body">
-                            <h5 class="">Name of the room</h5>
-                            <h6>Price: 200$ per night</h6>
-                            <div class="features mb-1">
-                                    <h6 class="mb-1">Features</h6>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        2 rooms
-                                    </span>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        2 bathrooms
-                                    </span>
-                                    <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                        3 sofas
-                                    </span>
-                            </div>
-
-                            <div class="facilities mb-1">
-                                <h6 class="mb-1">
-                                        Facilities
-                                </h6>
-                                <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                    Television
-                                </span>
-                                <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-                                    Wifi/5G
-                                </span>
-                            </div>
-
-                            <div class="rating mb-1">
-                                <h6 class="mb-1">Rating</h6>
-                                <span class="badge rounded-pill bg-light">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                </span>
-                            </div>
-
-                            <div class="d-flex justify-content-evenly mb-2">
-                                <a href="" class="btn btn-sm text-white custom-bg shadow-none" style="margin-right: 50px;">Book now</a>
-
-                                <a href="" class="btn btn-primary">More details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12 text-center mt-5">
-                    <a href="" class="btn btn-sm btn-outline-dark rounded-0 fm-bold shadow-none">
-                        More rooms
-                    </a>
-                </div>
-            </div>
-        </div>
-    -->
-    <!--Room START-->
     <div class="container">
         <section class="ftco-section bg-light">
             <div class="container">
@@ -445,205 +206,34 @@
                         <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR ROOMS</h2>
                     </div>
                 </div>
+
                 <div class="row">
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="room.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-1.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-search"></i>
+                    @foreach (var room in Model.HomeViewModel.ListRoomsRandom)
+                    {
+                        <div class="col-sm col-md-6 col-lg-4 ftco-animate">
+                            <div class="room">
+                                <a href="room.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/Admin/Rooms/@room.RoomImage)">
+                                    <div class="icon d-flex justify-content-center align-items-center">
+                                        <i class="bi bi-search"></i>
+                                    </div>
+                                </a>
+                                <div class="text p-3 text-center">
+                                    <h3 class="mb-3"><a>Room Number: @room.RoomNumber</a></h3>
+                                    <p><span class="price mr-2">$@room.Price.00</span> <span class="per">per night</span></p>
+                                    <hr>
+                                    <p class="pt-1">
+                                        <a type="button" class="btn-custom" data-toggle="modal" data-target="#add_event1" onclick="setFormBooking(@room.RoomID, @room.Price)">Booking Now<span class="bi bi-arrow-right"></span></a>
+
+                                    </p>
                                 </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="suiteRoom.html">Suite Room</a></h3>
-                                <p><span class="price mr-2">$120.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="suiteRoom.html" class="btn-custom">View Room Details <span class="bi bi-arrow-right"></span></a></p>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="room.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-2.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-search"></i>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="familyRoom.html">Family Room</a></h3>
-                                <p><span class="price mr-2">$20.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="familyRoom.html" class="btn-custom">View Room Details <span class="bi bi-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="room.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-3.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-search"></i>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="deluxeRoom.html.html">Deluxe Room</a></h3>
-                                <p><span class="price mr-2">$150.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="deluxeRoom.html" class="btn-custom">View Room Details <span class="bi bi-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="room.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-4.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-search"></i>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="classicRoom.html">Classic Room</a></h3>
-                                <p><span class="price mr-2">$130.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="classicRoom.html" class="btn-custom">View Room Details <span class="bi bi-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="room.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-5.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-search"></i>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="superiorRoom.html">Superior Room</a></h3>
-                                <p><span class="price mr-2">$300.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="superiorRoom.html" class="btn-custom">View Room Details <span class="bi bi-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="room.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-6.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-search"></i>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="luxuryRoom.html">Luxury Room</a></h3>
-                                <p><span class="price mr-2">$500.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="luxuryRoom.html" class="btn-custom">View Room Details <span class="bi bi-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </section>
     </div>
-    <!--
-        <section class="ftco-section bg-light">
-            <div class="container">
-                    <div class="row justify-content-center mb-5 pb-3">
-              <div class="col-md-7 heading-section text-center ftco-animate">
-                <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR ROOMS</h2>
-              </div>
-            </div>
-                <div class="row">
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="rooms.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-1.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <span class="icon-search2"></span>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="rooms.html">Suite Room</a></h3>
-                                <p><span class="price mr-2">$120.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="room-single.html" class="btn-custom">View Room Details <span class="icon-long-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="rooms.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-2.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <span class="icon-search2"></span>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="rooms.html">Family Room</a></h3>
-                                <p><span class="price mr-2">$20.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="room-single.html" class="btn-custom">View Room Details <span class="icon-long-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="rooms.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-3.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <span class="icon-search2"></span>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="rooms.html">Deluxe Room</a></h3>
-                                <p><span class="price mr-2">$150.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="room-single.html" class="btn-custom">View Room Details <span class="icon-long-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="rooms.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-4.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <span class="icon-search2"></span>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="rooms.html">Classic Room</a></h3>
-                                <p><span class="price mr-2">$130.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="room-single.html" class="btn-custom">View Room Details <span class="icon-long-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="rooms.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-5.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <span class="icon-search2"></span>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="rooms.html">Superior Room</a></h3>
-                                <p><span class="price mr-2">$300.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="room-single.html" class="btn-custom">View Room Details <span class="icon-long-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm col-md-6 col-lg-4 ftco-animate">
-                        <div class="room">
-                            <a href="rooms.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(images/room-6.jpg);">
-                                <div class="icon d-flex justify-content-center align-items-center">
-                                    <span class="icon-search2"></span>
-                                </div>
-                            </a>
-                            <div class="text p-3 text-center">
-                                <h3 class="mb-3"><a href="rooms.html">Luxury Room</a></h3>
-                                <p><span class="price mr-2">$500.00</span> <span class="per">per night</span></p>
-                                <hr>
-                                <p class="pt-1"><a href="room-single.html" class="btn-custom">View Room Details <span class="icon-long-arrow-right"></span></a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    -->
-    <!--END-->
+
     <!-- Facilities -->
     <div class="row no-gutters justify-content-center">
         <div class="col-md-7 text-center heading-section ftco-animate">
@@ -711,46 +301,6 @@
         </div>
     </section>
     <!---->
-    <!--
-    <div class="container">
-        <div class="row justify-content-evenly px-lg-0 px-md-0 px-5">
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-                <img src="data:image/png;base64,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" width="80px">
-                <h5 class="mt-3">Wifi</h5>
-            </div>
-
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-                <img src="data:image/png;base64,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" width="80px">
-                <h5 class="mt-3">Wifi</h5>
-            </div>
-
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-                <img src="data:image/png;base64,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" width="80px">
-                <h5 class="mt-3">Wifi</h5>
-            </div>
-
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-                <img src="data:image/png;base64,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" width="80px">
-                <h5 class="mt-3">Wifi</h5>
-            </div>
-
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACoCAMAAABt9SM9AAAAgVBMVEX///8AAADPz8/4+PjLy8toaGi/v7/IyMjo6Oji4uItLS309PT6+vpkZGRGRkaKioqYmJh9fX2zs7MzMzPu7u53d3erq6sPDw+hoaHc3NySkpKHh4ddXV1OTk47OzvT09MXFxchISFLS0tubm45OTkvLy9XV1cUFBSdnZ0mJiYeHh5djogRAAAIxUlEQVR4nO2d2WKyOhCAFRV3EUREtFrU9tS+/wOeWv+2LmSWkA30u1ZIBpKZzEaj8eRJjWn1PT+ZrvbjyeQzPza/OOafk8l4v5omvtdv2R6fG8TtZLV+a6K8rVdJO7Y9Wntsk3CDS+maTZhsbY/bNL0onHHl9McsjHq2Z2CIXrSXl9Mf+/oLrBsuVEjqzCLs2p6PNobRWp2gflhHQ9vzUs8oeVEvqTMvycj27JTia3inLln7tmeoimWoV1JnwqXteSogKmEj8JhFtudajjgwJakzQXVt/GXHrKhOdKq5Gr2JeVGdmLRtz5xN92BHVCcO1bJVPWO7ejEzz7YEyCwtLcBLJtXYu+KxbUGdGVdAM65sC+mPlW1ZIES2BXSNy2Zqn+35LGT2jZJLbfq2ZSKixArcjIPU95bxjf9gFC89Pw3GJR6Cm2vRk3PrvQfRluCSGm6j4F3qBgsHzYg5fxovWZepseJuJuEWm+uZsTRb7gTWqbQhtEzZ3jGnIkK83SrPSq8ML8tZt3Rn5+oNGMPepIqiMr2Us+0PHIkFMWyrt1SpWR2nhFj2D07YXPQoYKDB6OnT3Yt79XdnEh+JQ33RFlPwqQryaPm02CWOM9S6ZfSoCsaqo2tKG2OqPbA3SmkjmeoeiBiSj32RmBlMQjpBdMwM5o4RxXO8MBj+9CniOlgJX/coD9KwviZZMRYsLsoBx8IO8UEYlvHDD0ENzq288C3Cid6wUsTfd3tuN4IL0ujugCtqq4cL/FGm5gaDmlcdiRU43PpJFu7fJ5v8dIl8s3nfh1niU1yDt4xQoybjX1SODBsJc0/o+1kHdFwMOpnPXNXonmpIWtjRlWP3xX5AjshOAp9zuMNeroA7bxmwNUi2Qlt++EoV1A+voU+utvCRaxkwbDx4BBPiDtP/kI7xTz6IS3KI3EJ/JAM+UtB2gv6U6tgRcJzS5AXvrosycqAAv9uUZ9VKlMRPZwllPcLrQPe5FQqsDAhL0FOYDdghPJshpGbX5eUBAo0d/3eSqxPViZxg+0JPp7w8IIbiG6PKpUV0FfKYoqsRuK3e6oy+8L7Y+m9pS1wOMHGJ91m959eW6LZIfLmlNW1rhYhrKfqj5grZ4psuENNaywK8BNkDYoHBo04uhRRul0f4CRnJcIO3+lahYafbIV90QN2A/1CU4YZygHeColFodwLeRykm4O+NVDmdCcGB3J99DirlUsidPgRlRQ3CKgJ8Ve6kZcCXe6OIQVkZL94Bd6EbaRkJ0nWpo0McFHqAjkBXz85Q1GL4mzjzCj0dSxnxUN6a/9/Pr/bmSquHyXy3GWdQAG4o71v4/Eb67zNIDttsvNnNE7eq0NvsOb51sqi7vLJu42U3yjqMhLV/VKyIDo1pXDEJ4HhEn+Gp/8ZY7EYFjHTiyZQYTd9OGQLT7alSR4uckNuhhx++L+yTbZFBRbpIkdJrmrLNGMgtIhxJT4YR+kOu+EylH30rpWnKCpRnktTgumQUyiO9Xs4rRSyyeWKuYIX0KLVCjjddIchqrsggjAniclpauKw6CnPRY1w3Oiwt1CGzUbzpLlHHorMtHlAvg4YMN9Rl7WBp5glxmOyMphpJbOtyskp6hAxaW44wljftYt82uPeF1pIsuDBtrPPWcsCLULNWgrWwewsRis4PtNeuxdDZ3UhCJAvARWekKhJYikcT92chHis957znRdNwvJsdvzjsxuE08ujvJJCbLzMfnYhzkWhmYc9fCXx7k5VPO0uKTWK3PO4N8ZtF2F1HPnrMm/sEA0CoY5wzHgTjxJdRROya8o7b/7Hgryrmp5TiQy22ALasrix7zLAt3gxsVa+KKTR1EFlFnO4Z3wyQ16tQWg66HgryxWBZEWvAb4GVa4G0tKe7S3DvTwZllciJ6gRYoX4vLSe9y7eBVUjht+Wj8198QvO/DS45GnC9lhZgMwxLdzxfA2/ttQXhqKwaDe83SQUszyyxAv8A1uJFaebCyTX4j3PI+C0AlmBrp0JWzeYOCDz2gu+jasdBPXjNCLaXFSZOwgcpZBxVgJdeg+DsfqQGxV/9eLc9H40Mc7WyajZz5xwKqqCm17CoRLIMHyxUJol7HnYFaJJVLaWlTVY1lJbIL1fMK6/hQwXa5HPAwtX/eAmi7e/M420UEE2N6tuflxA63h2mhSk2yynlv6bnoxO08eviA1hK8QfazM9+w1ZlYG6GF9Q30MZO34ZaVuoHUYQvpAy3JbJ91UUlgosoJ3uc2jl0HRc97RKAjgZWXyawiL8eLghggkfmya4HdUfSM3qzAN4+icRJICjrbK4tA/EqlNJgYs1ah3UotLEk84iFOdF1sLVEuabSul5kiTiYO8pG8GaVcNoJnIiufV5HhuKUhlKlFsVVega72mqjcGYlNVehhq1AfSFOQV5R6RahBebpQMVYrXP/GiiIYN2nC9bBzGoU6EMVF729Zh104Tc3hW6gIuxHq/Hmi/EqAo2LG5UI9/CqFJcJp5+Am297020rBJJIe5cpXu6ljZag+1uA8SH+kV+gCgZAIszv9ypmNdmvflmm8/E+A5xXS0FBywwwCdrZfjyX/1JiZQEKpdwrVLLLCCx23tQr1FWSIRJUfa1tsgwfYV/dPyrSh8cAOS4s92oGLUFK9K5ORyytELsJO/FNVdsQc0bqlv0hB7mfMNwN+CFgJG497QfGBwieljxdVvWIOZeB1fzV5aolE7AaMENtkx8BVgfmme3RWoYjq0fftJjZ8XVJ75OD2V/f0Z50hmCWatbN186D+Umexz5MP98sBswPEjy2VfrUhhx4wrI9Wsuw+hzVI6tInufZkAFLHT62Mmw8/VksGOvw0Vchywdfs1JoGdAq1x/qUEFRFuDT1Nc8gzsNcu+x2hT2loPU1bXODY1YoMX1tanqVQBBIz414S9os6iaNn6SYwgeqAdPRXgNUPxch0JCxVw0Ob3iv8cO6YgoMrgWT/NKRPemq3zn4Z0yMF663+XNZr6bp8/19+RB+B9/DHTaAdPimwAAAABJRU5ErkJggg==" width="80px">
-                <h5 class="mt-3">Wifi</h5>
-            </div>
-
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-                <img src="data:image/png;base64,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" width="80px">
-                <h5 class="mt-3">Wifi</h5>
-            </div>
-        </div>
-
-        <div class="col-lg-12 text-center mt-5">
-            <a href="" class="btn btn-sm btn-outline-dark rounded-0 fm-bold shadow-none">
-                More facilities
-            </a>
-        </div>
-    </div> -->
     <!--Feedback-->
     <div class="row no-gutters justify-content-center pb-5">
         <div class="col-md-7 text-center heading-section ftco-animate">
@@ -821,7 +371,6 @@
             <div class="swiper-pagination"></div>
         </div>
     </div>
-
     <!-- Contact -->
     <div class="row no-gutters justify-content-center pb-5">
         <div class="col-md-7 text-center heading-section ftco-animate">
@@ -950,11 +499,65 @@
             </div>
         </div>
     </div>
-
     <h6 class="text-center bg-dark text-white p-3 m-0">Developed by KING OF LOSER TEAM - FPTU - SE17B.NET</h6>
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <div id="add_event1" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Booking</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="return BookingRoom()" id="formBooking">
+                        <input type="hidden" id="BookingRoomID" name="RoomID" />
+                        <span id="RoomID" class="text-danger"></span>
+                        <input type="hidden" id="IdCus" name="CustomerId" />
+                        <span id="CustomerId" class="text-danger"></span>
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                <label>Check-in Date <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input name="CheckInDate" class="form-control checkin_date" type="text">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-calendar"></i>
+                                    </span>
+                                </div>
+                                <span id="CheckInDate" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-lg-12">
+                                <label>Check-out Date <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input name="CheckOutDate" class="form-control checkout_date" type="text">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-calendar"></i>
+                                    </span>
+                                </div>
+                                <span id="CheckOutDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Service <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text">
+                        </div>
+
+                        <div class="d-flex form-group">
+                            <label>Total Price: <span class="text-danger"></span></label>
+                            <p><h5 class="price" id="BookingPrice"></h5></p>
+                        </div>
+                        <span id="CustomerId" class="text-danger"></span>
+                        <div class="submit-section">
+                            <button type="submit" class="btn btn-primary submit-btn">Checkout</button>
+                        </div>
+
+                        <span id="BookingError" class="text-danger"></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
@@ -975,7 +578,7 @@
     <script src="~/js/scrollax.min.js"></script>
     <script src="~/js/main.js"></script>
     <script>
-
+        $("#kt_daterangepicker_1").daterangepicker();
         document.addEventListener("DOMContentLoaded", function () {
             var swiper = new Swiper(".swiper_fb", {
                 effect: "coverflow",
@@ -996,5 +599,6 @@
             });
         });
     </script>
+
 </body>
 </html>

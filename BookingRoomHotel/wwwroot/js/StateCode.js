@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (roleCus()) {
             document.getElementById("userAvt").src = "/images/customer/profile/" + localStorage.getItem("avt");
             document.getElementById("userAvt2").src = "/images/customer/profile/" + localStorage.getItem("avt");
+            loadNotiList();
         }
     } else {
         document.getElementById("showLoginStaff").classList.remove("d-none");
@@ -73,6 +74,7 @@ function sendToCustomerController(endPoint, form) {
             if (data.id !== null) localStorage.setItem("IdCus", data.id);
             if (data.name !== null) localStorage.setItem("Name", data.name);
             if (data.avt !== null) localStorage.setItem("avt", data.avt);
+            if (data.listNoti !== null) localStorage.setItem("listNoti", data.listNoti);
             hideLogRegBtn();
             document.getElementById('successMessage').innerHTML = data.message;
             $('.modal').modal().hide();
@@ -91,13 +93,19 @@ function sendToCustomerController(endPoint, form) {
 }
 
 function logout() {
-    localStorage.clear();
-    document.getElementById("showUserAuth").classList.add("d-none");
-    document.getElementById("showLogout").classList.add("d-none");
-    document.getElementById("showLoginStaff").classList.remove("d-none");
-    document.getElementById("showLogCus").classList.remove("d-none");
-    document.getElementById("showResCus").classList.remove("d-none");
-    document.getElementById("showName").classList.add("d-none");
+    if (roleCus()) {
+        localStorage.clear();
+        document.getElementById("showUserAuth").classList.add("d-none");
+        document.getElementById("showLogout").classList.add("d-none");
+        document.getElementById("showLoginStaff").classList.remove("d-none");
+        document.getElementById("showLogCus").classList.remove("d-none");
+        document.getElementById("showResCus").classList.remove("d-none");
+        document.getElementById("showName").classList.add("d-none");
+    } else {
+        localStorage.clear();
+        window.location.href = '/Admin/Index'
+    }
+
 }
 
 var jwtToken = localStorage.getItem("accessToken");
@@ -143,7 +151,7 @@ function sendJwtAndData(endPoint, id) {
     }).then(data => {
         document.getElementById("listData").innerHTML = data;
     }).catch(error => {
-        alert(error);
+
     });
     return false;
 }
@@ -152,12 +160,42 @@ function hideLogRegBtn() {
     document.getElementById("userAvt").src = "/images/customer/profile/" + localStorage.getItem("avt");
     document.getElementById("userAvt2").src = "/images/customer/profile/" + localStorage.getItem("avt");
     document.getElementById("showName").innerText = "Welcome, " + localStorage.getItem("Name");
+    loadNotiList();
     document.getElementById("showName").classList.remove("d-none");
     document.getElementById("showUserAuth").classList.remove("d-none");
     document.getElementById("showLogout").classList.remove("d-none");
     document.getElementById("showLoginStaff").classList.add("d-none");
     document.getElementById("showLogCus").classList.add("d-none");
     document.getElementById("showResCus").classList.add("d-none");
+}
+
+function loadNotiList() {
+    var notifications = JSON.parse(localStorage.getItem('listNoti'));
+    var notiList = document.getElementById('notiList');
+
+    for (var i = 0; i < notifications.length; i++) {
+        var notification = notifications[i];
+
+        var noti = document.createElement('li');
+        noti.className = "notification-message";
+        noti.innerHTML = `
+        <a href="#">
+            <div class="media">
+                <span class="avatar avatar-sm">
+                    <img class="avatar-img rounded-circle" alt="User Image" src="/images/Admin/k-logo-design.jpg">
+                </span>
+                <div class="media-body">
+                    <p class="noti-details">
+                        <span class="noti-title"> ${notification.Title}</span><br>
+                        <span class="noti-content"> ${notification.Content}</span><br>
+                        <p class="noti-time"><span class="notification-time">${notification.CreatedAt}</span> </p>
+                    </p>
+                </div>
+            </div>
+        </a>
+    `;
+        notiList.prepend(noti);
+    }
 }
 
 

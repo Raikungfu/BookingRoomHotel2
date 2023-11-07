@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingRoomHotel.Models
 {
@@ -10,15 +9,10 @@ namespace BookingRoomHotel.Models
 
         [Required]
         public string Content { get; set; }
+        public string CustomerId { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
-        public string Id { get; set; }
-        public bool IsRead { get; set; }
-
-        [ForeignKey("Id")]
-        public Customer Customer { get; set; }
+        public string Title { get; set; }
     }
-
-
 }

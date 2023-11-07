@@ -8,11 +8,14 @@ namespace BookingRoomHotel.Models
 		[Key]
 		public int RoomTypeID { get; set; }
 
-		[Required]
+		[Required]  
 		public string TypeName { get; set; }
 
         [Required]
-        public int Price { get; set; }
+        public int PriceFrom { get; set; }
+        [Required]
+
+        public int PriceTo { get; set; }
         [Required]
         public int Max { get; set; }
         [Required]

@@ -57,235 +57,220 @@
 
 <body>
 
-
-<section class="ftco-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="row">
-                    <div class="col-md-12 ftco-animate">
-                        <h2 class="mb-4">Superior Room</h2>
-                        <div class="single-slider owl-carousel">
-                            @foreach(var item in Model.ListMedia)
-                            {
-                                if (item.Type.Equals("image"))
-                                {
-                                    <div class="item">
-                                        <div class="room-img" style="background-image: url(/images/Admin/RoomTypes/@item.URL);"></div>
-                                    </div>
-                                }
-                            }
-                        </div>
-                    </div>
-                    <div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
-                        <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
-                        <div class="d-md-flex mt-5 mb-5">
-                            <ul class="list">
-                                <li><span>Max:</span> @Model.RoomType.Max Persons</li>
-                                <li><span>Size:</span> @Model.RoomType.Size m2</li>
-                            </ul>
-                            <ul class="list ml-md-5">
-                                <li><span>View:</span> @Model.RoomType.View</li>
-                                <li><span>Bed:</span> @Model.RoomType.Bed</li>
-                            </ul>
-                        </div>
-                        <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
-                    </div>
-                    <div class="col-md-12 room-single ftco-animate mb-5 mt-4">
-                        <h3 class="mb-4">Take A Tour</h3>
-                        <div class="block-16">
-                            <figure>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-12 ftco-animate">
+                            <h2 class="mb-4">@Model.RoomType.TypeName</h2>
+                            <div class="single-slider owl-carousel">
                                 @foreach (var item in Model.ListMedia)
                                 {
-                                    if (item.Type.Equals("video"))
+                                    if (item.Type.Equals("image"))
                                     {
-                                            <a href="@item.URL?autoplay=1" class="play-button popup-vimeo"><span class="icon-play"></span></a>
+                                        <div class="item">
+                                            <div class="room-img" style="background-image: url(/images/Admin/RoomTypes/@item.URL);"></div>
+                                        </div>
                                     }
                                 }
-                                
-                            </figure>
-                        </div>
-                    </div>
-
-                </div>
-            </div> <!-- .col-md-8 -->
-            <div class="col-lg-4 sidebar ftco-animate">
-                <div class="sidebar-box">
-                    <form action="#" class="search-form">
-                        <div class="form-group">
-                            <span class="icon fa fa-search"></span>
-                            <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
-                        </div>
-                    </form>
-                </div>
-                <div class="sidebar-box ftco-animate">
-                    <div class="categories">
-                        <h3>Categories</h3>
-                        <li><a href="#">Properties <span>(12)</span></a></li>
-                        <li><a href="#">Home <span>(22)</span></a></li>
-                        <li><a href="#">House <span>(37)</span></a></li>
-
-                    </div>
-                </div>
-
-                <div class="sidebar-box ftco-animate">
-                    <div class="col-md-12 properties-single ftco-animate mb-5 mt-4">
-                        <h4 class="mb-4">Review &amp; Ratings</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <form method="post" class="star-rating">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i> 100 Ratings</span></p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i> 30 Ratings</span></p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 5 Ratings</span></p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 0 Ratings</span></p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 0 Ratings</span></p>
-                                        </label>
-                                    </div>
-                                </form>
                             </div>
                         </div>
+                        <div class="col-md-12 room-single mt-4 ftco-animate">
+                            <p>@Model.RoomType.Description1</p>
+                            <div class="d-md-flex mt-5 mb-5">
+                                <ul class="list">
+                                    <li><span>Max:</span> @Model.RoomType.Max Persons</li>
+                                    <li><span>Size:</span> @Model.RoomType.Size m<sup>2</sup></li>
+                                    <li><span>Price:</span> $@Model.RoomType.PriceFrom ~ $@Model.RoomType.PriceTo</li>
+                                </ul>
+                                <ul class="list ml-md-5">
+                                    <li><span>View:</span> @Model.RoomType.View</li>
+                                    <li><span>Bed:</span> @Model.RoomType.Bed</li>
+                                </ul>
+                            </div>
+                            @if (Model.RoomType.Description2 != null)
+                            {
+                                <p>@Model.RoomType.Description2</p>
+                            }
+                        </div>
+                        <div class="col-md-12 room-single ftco-animate mt-4">
+                            <h3 class="mb-4">Take A Tour</h3>
+                            <div class="block-16">
+                                <figure>
+                                    <div id="player"></div>
+                                </figure>
+                            </div>
+                        </div>
+                        @if (Model.RoomType.Description3 != null)
+                        {
+                            <div class="col-md-12 room-single ftco-animate mb-5 mt-4">
+                                <p>@Model.RoomType.Description3</p>
+                            </div>
+                        }
                     </div>
+                </div> <!-- .col-md-8 -->
+            </div>
+        </div>
+    </section> <!-- .section -->
+    <!-- Ig start-->
+    <section class="instagram pt-5">
+        <div class="container-fluid">
+            <div class="row no-gutters justify-content-center pb-5">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <h2><span>Instagram</span></h2>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-1.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-1.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-2.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-2.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-3.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-3.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-4.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-4.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-5.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-5.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-</section> <!-- .section -->
+    </section>
+    <!--Ig end-->
+    <!-- Footer -->
+    <div class="container-fluid bg-white mt-5">
+        <div class="row">
+            <div class="col-lg-4 mt-4">
+                <h3 class="h-font fw-bold fs-3 mb-2">KIOT HOTEL</h3>
+                <p>
+                    Kiot Hotel was established in September 2023, with CEOs in King Of Loser team.
+                    With the goal of always making customers happy and building trust in the first place, we will always bring you services, providing excellent experience in this place.
+                </p>
+            </div>
 
+            <div class="col-lg-4 mt-4">
+                <h5 class="mb-3">Links</h5>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Home </a> <br>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Rooms </a> <br>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Facilities </a> <br>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Contact us </a> <br>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> About </a>
+            </div>
 
-<!-- Ig start-->
-<section class="instagram pt-5">
-    <div class="container-fluid">
-        <div class="row no-gutters justify-content-center pb-5">
-            <div class="col-md-7 text-center heading-section ftco-animate">
-                <h2><span>Instagram</span></h2>
-            </div>
-        </div>
-        <div class="row no-gutters">
-            <div class="col-sm-12 col-md ftco-animate">
-                <a href="~/images/insta-1.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-1.jpg);">
-                    <div class="icon d-flex justify-content-center">
-                        <span class="align-self-center">
-                            <i class="bi bi-instagram"></i>
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-sm-12 col-md ftco-animate">
-                <a href="~/images/insta-2.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-2.jpg);">
-                    <div class="icon d-flex justify-content-center">
-                        <span class="align-self-center">
-                            <i class="bi bi-instagram"></i>
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-sm-12 col-md ftco-animate">
-                <a href="~/images/insta-3.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-3.jpg);">
-                    <div class="icon d-flex justify-content-center">
-                        <span class="align-self-center">
-                            <i class="bi bi-instagram"></i>
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-sm-12 col-md ftco-animate">
-                <a href="~/images/insta-4.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-4.jpg);">
-                    <div class="icon d-flex justify-content-center">
-                        <span class="align-self-center">
-                            <i class="bi bi-instagram"></i>
-                        </span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-sm-12 col-md ftco-animate">
-                <a href="~/images/insta-5.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-5.jpg);">
-                    <div class="icon d-flex justify-content-center">
-                        <span class="align-self-center">
-                            <i class="bi bi-instagram"></i>
-                        </span>
-                    </div>
-                </a>
+            <div class="col-lg-4 mt-4">
+                <h5 class="mb-3">Follow us</h5>
+                <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-envelope"></i> Gmail</a><br>
+                <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-facebook"></i> Facebook</a><br>
+                <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-twitter"></i> Twitter</a><br>
+                <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-instagram"></i> Instagram</a><br>
             </div>
         </div>
     </div>
-</section>
-<!--Ig end-->
-<!-- Footer -->
-<div class="container-fluid bg-white mt-5">
-    <div class="row">
-        <div class="col-lg-4 mt-4">
-            <h3 class="h-font fw-bold fs-3 mb-2">KIOT HOTEL</h3>
-            <p>
-                Kiot Hotel was established in September 2023, with CEOs in King Of Loser team.
-                With the goal of always making customers happy and building trust in the first place, we will always bring you services, providing excellent experience in this place.
-            </p>
-        </div>
+    <h6 class="text-center bg-dark text-white p-3 m-0">Developed by KING OF LOSER TEAM - FPTU - SE17B.NET</h6>
 
-        <div class="col-lg-4 mt-4">
-            <h5 class="mb-3">Links</h5>
-            <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Home </a> <br>
-            <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Rooms </a> <br>
-            <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Facilities </a> <br>
-            <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Contact us </a> <br>
-            <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> About </a>
-        </div>
+    <script type="text/javascript">
+        var tag = document.createElement('script');
 
-        <div class="col-lg-4 mt-4">
-            <h5 class="mb-3">Follow us</h5>
-            <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-envelope"></i> Gmail</a><br>
-            <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-facebook"></i> Facebook</a><br>
-            <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-twitter"></i> Twitter</a><br>
-            <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-instagram"></i> Instagram</a><br>
-        </div>
-    </div>
-</div>
-<h6 class="text-center bg-dark text-white p-3 m-0">Developed by KING OF LOSER TEAM - FPTU - SE17B.NET</h6>
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+
+        function onYouTubeIframeAPIReady() {
+
+        @foreach (var item in Model.ListMedia)
+        {
+            if (item.Type.Equals("video"))
+            {
+                <text>
+                  var player = new YT.Player('player', {
+                            width: '720',
+                            height: '405',
+                            videoId: "@item.URL",
+                            playerVars: {
+                                'autoplay': 1,
+                                'rel': 0,
+                                'loop': 1,
+                                'playlist': '@item.URL'
+                            },
+                            events:
+                            {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                </text>
+            }
+        }
+                }
+        function onPlayerReady(event) {
+            event.target.playVideo().mute();
+        }
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                player.seekTo(0);
+                player.playVideo();
+            }
+        }
+        function stopVideo() {
+            player.stopVideo();
+        }
+    </script>
 
 
-<!-- JavaScript Libraries -->
-<!-- loader -->
-<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" /><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
 
-
-<script src="~/js/jquery.min.js"></script>
-<script src="~/js/jquery-migrate-3.0.1.min.js"></script>
-<script src="~/js/popper.min.js"></script>
-<script src="~/js/bootstrap.min.js"></script>
-<script src="~/js/jquery.easing.1.3.js"></script>
-<script src="~/js/jquery.waypoints.min.js"></script>
-<script src="~/js/jquery.stellar.min.js"></script>
-<script src="~/js/owl.carousel.min.js"></script>
-<script src="~/js/jquery.magnific-popup.min.js"></script>
-<script src="~/js/aos.js"></script>
-<script src="~/js/jquery.animateNumber.min.js"></script>
-<script src="~/js/bootstrap-datepicker.js"></script>
-<script src="~/js/scrollax.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-<script src="~/js/google-map.js"></script>
-<script src="~/js/main.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.easing.1.3.js"></script>
+    <script src="~/js/jquery.waypoints.min.js"></script>
+    <script src="~/js/jquery.stellar.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/aos.js"></script>
+    <script src="~/js/jquery.animateNumber.min.js"></script>
+    <script src="~/js/bootstrap-datepicker.js"></script>
+    <script src="~/js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="~/js/google-map.js"></script>
+    <script src="~/js/main.js"></script>
 
 </body>
 </html>

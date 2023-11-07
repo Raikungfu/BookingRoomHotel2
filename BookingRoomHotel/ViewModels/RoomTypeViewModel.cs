@@ -17,6 +17,7 @@ namespace BookingRoomHotel.ViewModels
 
 	public class CreateRoomTypeViewModel
 	{
+        public int? RoomTypeID { get; set; }
         [Required]
         public string TypeName { get; set; }
         [Required]
@@ -28,12 +29,14 @@ namespace BookingRoomHotel.ViewModels
         [Required]
         public int Size { get; set; }
         [Required]
-        public int Price { get; set; }
+        public int PriceFrom { get; set; }
+        [Required]
+        public int PriceTo { get; set; }
         [Required]
         public string Description1 { get; set; }
         public string? Description2 { get; set; }
 		public string? Description3 { get; set; }
-		public IFormFileCollection Images { get; set; }
-        public string? VideoUrl { get; set; }
+		public IFormFileCollection? Images { get; set; }
+        public string? VideoID { get; set; }
 	}
 }

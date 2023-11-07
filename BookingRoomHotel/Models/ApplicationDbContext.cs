@@ -24,6 +24,8 @@ namespace BookingRoomHotel.Models
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<Service> Service { get; set; }
         public DbSet<ServiceBooking> ServiceBooking { get; set; }
+        public DbSet<CustomerNotification> CustomerNotification { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

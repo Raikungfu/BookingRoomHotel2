@@ -37,16 +37,16 @@ namespace BookingRoomHotel.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("RoomID")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TotalPrice")
+                    b.Property<int?>("TotalPrice")
                         .HasColumnType("int");
 
                     b.HasKey("BookingID");
@@ -122,16 +122,17 @@ namespace BookingRoomHotel.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Id")
+                    b.Property<string>("CustomerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerNotificationId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerNotification");
                 });
@@ -284,16 +285,19 @@ namespace BookingRoomHotel.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HotelID")
+                    b.Property<int?>("HotelID")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<string>("RoomImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("RoomNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoomTypeID")
+                    b.Property<int?>("RoomTypeID")
                         .HasColumnType("int");
 
                     b.Property<int?>("ServiceID")
@@ -334,7 +338,10 @@ namespace BookingRoomHotel.Migrations
                     b.Property<int>("Max")
                         .HasColumnType("int");
 
-                    b.Property<int>("Price")
+                    b.Property<int>("PriceFrom")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceTo")
                         .HasColumnType("int");
 
                     b.Property<int>("Size")
@@ -465,16 +472,17 @@ namespace BookingRoomHotel.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Id")
+                    b.Property<string>("StaffId")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StaffNotificationId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("StaffId");
 
                     b.ToTable("StaffNotification");
                 });
@@ -483,10 +491,12 @@ namespace BookingRoomHotel.Migrations
                 {
                     b.HasOne("BookingRoomHotel.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BookingRoomHotel.Models.Room", "Room")
-                        .WithMany()
+                        .WithMany("Bookings")
                         .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -498,13 +508,11 @@ namespace BookingRoomHotel.Migrations
 
             modelBuilder.Entity("BookingRoomHotel.Models.CustomerNotification", b =>
                 {
-                    b.HasOne("BookingRoomHotel.Models.Customer", "Customer")
+                    b.HasOne("BookingRoomHotel.Models.Customer", null)
                         .WithMany("CustomerNotifications")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("BookingRoomHotel.Models.Media", b =>
@@ -518,15 +526,11 @@ namespace BookingRoomHotel.Migrations
                 {
                     b.HasOne("BookingRoomHotel.Models.Hotel", "Hotel")
                         .WithMany("Rooms")
-                        .HasForeignKey("HotelID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HotelID");
 
                     b.HasOne("BookingRoomHotel.Models.RoomType", "RoomType")
                         .WithMany("Rooms")
-                        .HasForeignKey("RoomTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoomTypeID");
 
                     b.HasOne("BookingRoomHotel.Models.Service", null)
                         .WithMany("Rooms")
@@ -558,13 +562,11 @@ namespace BookingRoomHotel.Migrations
 
             modelBuilder.Entity("BookingRoomHotel.Models.StaffNotification", b =>
                 {
-                    b.HasOne("BookingRoomHotel.Models.Staff", "Staff")
+                    b.HasOne("BookingRoomHotel.Models.Staff", null)
                         .WithMany("StaffNotifications")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("BookingRoomHotel.Models.Booking", b =>
@@ -580,6 +582,11 @@ namespace BookingRoomHotel.Migrations
             modelBuilder.Entity("BookingRoomHotel.Models.Hotel", b =>
                 {
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("BookingRoomHotel.Models.Room", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 
             modelBuilder.Entity("BookingRoomHotel.Models.RoomType", b =>

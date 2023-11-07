@@ -1,4 +1,5 @@
-﻿using BookingRoomHotel.Models;
+﻿using AutoMapper;
+using BookingRoomHotel.Models;
 using BookingRoomHotel.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +12,13 @@ namespace BookingRoomHotel.Controllers
     {
         // GET: RoomsController
         private readonly ApplicationDbContext _context;
-        public RoomsController(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        private readonly IUploadFileService _uploadFileService;
+        public RoomsController(ApplicationDbContext context, IMapper mapper, IUploadFileService uploadFileService)
         {
             _context = context;
+            _mapper = mapper;
+            _uploadFileService = uploadFileService;
         }
 
         // GET: Rooms
@@ -62,15 +67,27 @@ namespace BookingRoomHotel.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm][Bind("Id,Name,Email,Phone,DateOfBirth,Address,Pw,Role")] Room room)
+        public async Task<IActionResult> Create([FromForm][Bind("RoomNumber,RoomTypeID,Price,Describe,HotelID,Image")] CreateRoomViewModel roomC)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(room);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    Room room = _mapper.Map<Room>(roomC);
+                    string roomImg = _uploadFileService.uploadImage(roomC.Image, "images/Admin/Rooms");
+                    room.RoomImage = roomImg == null ? room.RoomImage : roomImg;
+                    _context.Add(room);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }catch(Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            return PartialView(room);
+            else
+            {
+                return PartialView(roomC);
+            }
         }
 
         // GET: Rooms/Edit/5
@@ -172,5 +189,7 @@ namespace BookingRoomHotel.Controllers
             listRoomViewModel.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
             return listRoomViewModel;
         }
+
+        
     }
 }

@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace BookingRoomHotel.Controllers
 {
-	public class BookingsController : Controller
-	{
+    public class BookingsController : Controller
+    {
         // GET: BookingsController
         private readonly ApplicationDbContext _context;
         public BookingsController(ApplicationDbContext context)
@@ -173,5 +175,50 @@ namespace BookingRoomHotel.Controllers
             listBooking.Count = total % 6 == 0 ? total / 6 : total / 6 + 1;
             return listBooking;
         }
+
+        [HttpGet]
+		public async Task<IActionResult> GetListBookingJson()
+		{
+			try
+			{
+				var bookings = await _context.Bookings.Include(r => r.Room.RoomType).Select(booking => new
+				{
+					BookingID = booking.BookingID,
+					CheckInDate = booking.CheckInDate,
+					CheckOutDate = booking.CheckOutDate,
+					RoomID = booking.Room.RoomNumber,
+					CustomerId = booking.CustomerId,
+					TotalPrice = booking.TotalPrice,
+					Status = booking.Status,
+                    RoomType = booking.Room.RoomType.TypeName
+				}).ToListAsync();
+
+				JsonSerializerOptions options = new JsonSerializerOptions
+				{
+					ReferenceHandler = ReferenceHandler.IgnoreCycles,
+					WriteIndented = true
+				};
+
+				var json = JsonSerializer.Serialize(bookings, options);
+
+				return Content(json, "application/json");
+			}
+			catch (Exception ex)
+			{
+				return BadRequest("An error occurred while fetching bookings.");
+			}
+		}
+
+
+		public string ObjectToJson(Object obj)
+        {
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                WriteIndented = true
+            };
+            return JsonSerializer.Serialize(obj, options);
+        }
+
     }
 }

@@ -3,10 +3,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
-<div class="row">
+<div class="mt-5">
     <form onsubmit="return sendJwtAndData('/Customers/Edit/', '@Model.Id')" id="formData">
         <div class="col-xl-12">
             <div class="card mb-4">
@@ -80,8 +77,10 @@
             </div>
         </div>
     </form>
+
+    <div>
+        <a onclick="sendJwt('/Customers/Edit/', '@Model.Id')">Edit</a> |
+        <a onclick="sendJwt('/Customers/Index','')">Back to List</a>
+    </div>
 </div>
-<div>
-    <a onclick="sendJwt('/Customers/Edit/', '@Model.Id')">Edit</a> |
-    <a onclick="sendJwt('/Customers/Index','')">Back to List</a>
-</div>
+

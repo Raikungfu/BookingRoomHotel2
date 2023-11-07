@@ -1,4 +1,5 @@
-﻿using BookingRoomHotel.Models;
+﻿using AutoMapper;
+using BookingRoomHotel.Models;
 using BookingRoomHotel.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace BookingRoomHotel.Controllers
     {
 		private readonly ApplicationDbContext _context;
 		private readonly IUploadFileService _uploadFileService;
-		public RoomTypesController(ApplicationDbContext context, IUploadFileService uploadFileService)
+		private readonly IMapper _mapper;
+		public RoomTypesController(ApplicationDbContext context, IUploadFileService uploadFileService, IMapper mapper)
 		{
 			_context = context;
 			_uploadFileService = uploadFileService;
+			_mapper = mapper;
 		}
 
 		// GET: RoomTypes
@@ -70,7 +73,7 @@ namespace BookingRoomHotel.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
-		public async Task<IActionResult> Create([FromForm][Bind("TypeName,Max,Bed,Size,View,Description1,Description2,Description3,Price,Images,VideoUrl")] CreateRoomTypeViewModel type)
+		public async Task<IActionResult> Create([FromForm][Bind("TypeName,Max,Bed,Size,View,Description1,Description2,Description3,PriceFrom,PriceTo,Images,VideoID")] CreateRoomTypeViewModel type)
 		{
 			if (ModelState.IsValid)
 			{
@@ -90,7 +93,7 @@ namespace BookingRoomHotel.Controllers
 				return NotFound();
 			}
 
-			var staff = await _context.RoomTypes.FindAsync(id);
+			var staff = await _context.RoomTypes.FindAsync(int.Parse(id));
 			if (staff == null)
 			{
 				return NotFound();
@@ -102,9 +105,9 @@ namespace BookingRoomHotel.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
-		public async Task<IActionResult> Edit(string id, [FromForm][Bind("Id,Name,Email,Phone,DateOfBirth,Address,Pw,Role")] Staff staff)
+        public async Task<IActionResult> Edit(string id, [FromForm][Bind("RoomTypeID,TypeName,Max,Bed,Size,View,Description1,Description2,Description3,PriceFrom,PriceTo,Images,VideoID")] CreateRoomTypeViewModel roomType)
 		{
-			if (id != staff.Id)
+			if (int.Parse(id) != roomType.RoomTypeID)
 			{
 				return NotFound();
 			}
@@ -113,7 +116,8 @@ namespace BookingRoomHotel.Controllers
 			{
 				try
 				{
-					_context.Update(staff);
+                    RoomType type = ConvertCreateRoomTypeViewModelToRoomType(roomType);
+                    _context.Update(type);
 					await _context.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
@@ -122,7 +126,7 @@ namespace BookingRoomHotel.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
-			return PartialView(staff);
+			return PartialView(roomType);
 		}
 
 		// GET: RoomTypes/Delete/5
@@ -163,27 +167,28 @@ namespace BookingRoomHotel.Controllers
         public RoomType ConvertCreateRoomTypeViewModelToRoomType(CreateRoomTypeViewModel model)
         {
             List<Media> listMedia = new List<Media>();
-			listMedia = _uploadFileService.uploadListImage(model.Images, "images/Admin/RoomTypes");
-            Media video = new Media
+            if (model.Images != null)
             {
-				For = "RoomType",
-				Type = "video",
-				URL = model.VideoUrl
-            };
-			listMedia.Add(video);
-            RoomType roomType = new RoomType
+                listMedia = _uploadFileService.uploadListImage(model.Images, "images/Admin/RoomTypes");
+            }
+
+            if (model.VideoID != null)
 			{
-				TypeName = model.TypeName,
-				Max = model.Max,
-				Size = model.Size,
-				Price = model.Price,
-				Bed = model.Bed,
-				Description1 = model.Description1,
-				Description2 = model.Description2,
-				Description3 = model.Description3,
-				View = model.View,
-				Media = listMedia
-        };
+                Media video = new Media
+                {
+                    For = "RoomType",
+                    Type = "video",
+                    URL = model.VideoID
+                };
+                listMedia.Add(video);
+            }
+			
+            RoomType roomType = _mapper.Map<RoomType>(model);
+			if (model.RoomTypeID != null) roomType.RoomTypeID = (int) model.RoomTypeID;
+			if (listMedia.Count > 0)
+			{
+				roomType.Media = listMedia;
+			}
 			return roomType;
         }
 

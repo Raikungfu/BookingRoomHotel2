@@ -1,0 +1,329 @@
+﻿@Html.ValidationSummary()
+@model BookingRoomHotel.ViewModels.SearchListRoomViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiot | About our rooms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7.0.8/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/animate.css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/css/aos.css">
+    <link rel="stylesheet" href="~/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="~/css/jquery.timepicker.css">
+    <link rel="stylesheet" href="~/css/flaticon.css">
+    <link rel="stylesheet" href="~/css/icomoon.css">
+    <link rel="stylesheet" href="~/css/style.css">
+
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .h-font {
+            font-family: 'Merienda', cursive;
+        }
+
+        .custom-bg {
+            background-color: #2ec1ac;
+        }
+
+            .custom-bg:hover {
+                background-color: #3d279e;
+            }
+
+        .avai-form {
+            margin-top: -50px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .btn-custom {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="body-content">
+        <!--Room start-->
+        <section class="ftco-section bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9" id="listData">
+                        <div class="row">
+                            @foreach (var room in Model.roomViewModel.ListRoom)
+                            {
+                                <div class="col-sm col-md-6 col-lg-4 ftco-animate">
+                                    <div class="room">
+                                        <a href="room.html" class="img d-flex justify-content-center align-items-center" style="background-image: url(/images/Admin/Rooms/@room.RoomImage)">
+                                            <div class="icon d-flex justify-content-center align-items-center">
+                                                <i class="bi bi-search"></i>
+                                            </div>
+                                        </a>
+                                        <div class="text p-3 text-center">
+                                            <h3 class="mb-3"><a>Room Number: @room.RoomNumber</a></h3>
+                                            <p><span class="price mr-2">$@room.Price.00</span> <span class="per">per night</span></p>
+                                            <hr>
+                                            <p class="pt-1">
+                                                <a type="button" class="btn-custom" data-toggle="modal" data-target="#add_event1">Booking Now<span class="bi bi-arrow-right"></span></a>
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    @for (int i = 1; i <= Model.roomViewModel.Count; i++)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="return pagination('/Customers/Index/' + '@i')">@i</a></li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <!--Room end-->
+                    <!--Booking -->
+                    <div class="col-lg-3">
+                        <div class="sidebar-wrap bg-light ftco-animate">
+                            <h3 class="heading mb-4">Advanced Search</h3>
+                            <form onsubmit="return searchRoom('/Home/SearchRoom')" id="formData">
+                                <div class="fields">
+                                    <div class="form-group">
+                                        <input asp-for="searchRoomViewModel.CheckInDate" name="CheckInDate" type="text" id="checkin_date" class="form-control checkin_date" placeholder="Check In Date">
+                                        <span id="CheckInDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input asp-for="searchRoomViewModel.CheckOutDate" name="CheckOutDate" type="text" id="checkin_date" class="form-control checkout_date" placeholder="Check Out Date">
+                                        <span id="CheckOutDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="select-wrap one-third">
+                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                            <select asp-for="searchRoomViewModel.RoomType" name="RoomType" id="" class="form-control">
+                                                <option value="" style="display:none;">Room Type</option>
+                                                <option value="1">Suite Room</option>
+                                                <option value="2">Classic Room</option>
+                                                <option value="3">Family Room</option>
+                                                <option value="4">Deluxe Room</option>
+                                                <option value="5">Superior Room</option>
+                                                <option value="6">Luxury Room</option>
+                                            </select>
+                                            <span id="RoomType" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="select-wrap one-third">
+                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                            <select asp-for="searchRoomViewModel.Adult" name="RoomType" id="" class="form-control">
+                                                <option value="" style="display:none;">Adult</option>
+                                                <option value="">1 Adult</option>
+                                                <option value="">2 Adult</option>
+                                                <option value="">3 Adult</option>
+                                                <option value="">4 Adult</option>
+                                                <option value="">5 Adult</option>
+                                                <option value="">6 Adult</option>
+                                            </select>
+                                            <span id="Adult" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="range-slider">
+                                            <span>
+                                                <output id="outArea1">30</output><span> m<sup>2</sup></span>	-
+                                                <output id="outArea2">100</output><span> m<sup>2</sup></span>
+                                            </span>
+                                            <input asp-for="searchRoomViewModel.AreaFrom" name="AreaFrom" value="30" min="30" max="100" step="5" type="range" oninput="document.getElementById('outArea1').value = this.value" />
+                                            <input asp-for="searchRoomViewModel.AreaTo" name="AreaTo" value="100" min="30" max="100" step="5" type="range" oninput="document.getElementById('outArea2').value = this.value" />
+                                            </svg>
+                                            <span id="AreaFrom" class="text-danger"></span>
+                                            <span id="AreaTo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="range-slider">
+                                            <span>
+                                                <output id="outPrice1">100</output><span> $</span>	-
+                                                <output id="outPrice2">5000</output><span> $</span>
+                                            </span>
+                                            <input asp-for="searchRoomViewModel.PriceFrom" name="PriceFrom" value="100" min="100" max="5000" step="100" type="range" oninput="document.getElementById('outPrice1').value = this.value" />
+                                            <input asp-for="searchRoomViewModel.PriceTo" name="PriceTo" value="5000" min="100" max="5000" step="100" type="range" oninput="document.getElementById('outPrice2').value = this.value" />
+                                            </svg>
+                                            <span id="PriceFrom" class="text-danger"></span>
+                                            <span id="PriceTo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="sidebar-wrap bg-light ftco-animate">
+                            <h3 class="heading mb-4">Star Rating</h3>
+                            <form method="post" class="star-rating">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">
+                                        <p class="rate"><span><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></span></p>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">
+                                        <p class="rate"><span><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></span></p>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">
+                                        <p class="rate"><span><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></span></p>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">
+                                        <p class="rate"><span><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></span></p>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">
+                                        <p class="rate"><span><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></span></p>
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Ig start-->
+    <section class="instagram pt-5">
+        <div class="container-fluid">
+            <div class="row no-gutters justify-content-center pb-5">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <h2><span>Instagram</span></h2>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-1.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-1.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-2.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-2.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-3.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-3.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-4.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-4.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md ftco-animate">
+                    <a href="~/images/insta-5.jpg" class="insta-img image-popup" style="background-image: url(/images/insta-5.jpg);">
+                        <div class="icon d-flex justify-content-center">
+                            <span class="align-self-center">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Ig end-->
+    <!-- Footer -->
+    <div class="container-fluid bg-white mt-5">
+        <div class="row">
+            <div class="col-lg-4 mt-4">
+                <h3 class="h-font fw-bold fs-3 mb-2">KIOT HOTEL</h3>
+                <p>
+                    Kiot Hotel was established in September 2023, with CEOs in King Of Loser team.
+                    With the goal of always making customers happy and building trust in the first place, we will always bring you services, providing excellent experience in this place.
+                </p>
+            </div>
+
+            <div class="col-lg-4 mt-4">
+                <h5 class="mb-3">Links</h5>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Home </a> <br>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Rooms </a> <br>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Facilities </a> <br>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> Contact us </a> <br>
+                <a href="" class="d-inline-block mb-2 text-dark text-decoration-none"> About </a>
+            </div>
+
+            <div class="col-lg-4 mt-4">
+                <h5 class="mb-3">Follow us</h5>
+                <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-envelope"></i> Gmail</a><br>
+                <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-facebook"></i> Facebook</a><br>
+                <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-twitter"></i> Twitter</a><br>
+                <a href="" class="d-inline-block text-dark text-decoration-none mb-2"> <i class="bi bi-instagram"></i> Instagram</a><br>
+            </div>
+        </div>
+    </div>
+    <h6 class="text-center bg-dark text-white p-3 m-0">Developed by KING OF LOSER TEAM - FPTU - SE17B.NET</h6>
+
+
+
+    <!-- JavaScript Libraries -->
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" /><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
+
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.easing.1.3.js"></script>
+    <script src="~/js/jquery.waypoints.min.js"></script>
+    <script src="~/js/jquery.stellar.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/aos.js"></script>
+    <script src="~/js/jquery.animateNumber.min.js"></script>
+    <script src="~/js/bootstrap-datepicker.js"></script>
+    <script src="~/js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="~/js/google-map.js"></script>
+    <script src="~/js/main.js"></script>
+
+</body>
+</html>
